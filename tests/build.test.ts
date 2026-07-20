@@ -83,3 +83,27 @@ describe('hero', () => {
     }
   })
 })
+
+describe('capabilities', () => {
+  it('renders one featured card and two compact cards', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelectorAll('.capability.featured')).toHaveLength(1)
+      expect(doc.querySelectorAll('.capability.compact')).toHaveLength(2)
+    }
+  })
+
+  it('states four claim-evidence pairs in the featured card', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const featured = doc.querySelector('.capability.featured')
+      expect(featured?.querySelectorAll('.claim')).toHaveLength(4)
+      expect(featured?.querySelectorAll('.evidence')).toHaveLength(4)
+    }
+  })
+
+  it('puts the featured card first in source order', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const first = doc.querySelector('.capability')
+      expect(first?.classList.contains('featured')).toBe(true)
+    }
+  })
+})
