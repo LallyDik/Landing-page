@@ -3,6 +3,7 @@ import type { SiteContent } from './types'
 export const he: SiteContent = {
   lang: 'he',
   dir: 'rtl',
+  opensInNewTab: 'נפתח בלשונית חדשה',
   meta: {
     title: 'לאה דיקמן — מפתחת Full Stack ומהנדסת פתרונות AI',
     description:
@@ -71,7 +72,6 @@ export const he: SiteContent = {
   },
   projects: {
     heading: 'פרויקטים',
-    opensInNewTab: 'נפתח בלשונית חדשה',
     items: [
       {
         name: 'מערכת ניהול שכירות',

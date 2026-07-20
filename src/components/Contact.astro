@@ -24,6 +24,9 @@ const isExternal = (href: string) => href.startsWith('http')
             rel={isExternal(link.href) ? 'noopener noreferrer' : undefined}
           >
             {link.label}
+            {isExternal(link.href) && (
+              <span class="visually-hidden">({content.opensInNewTab})</span>
+            )}
           </a>
         </li>
       ))

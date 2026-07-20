@@ -231,4 +231,18 @@ describe('contact', () => {
       expect(doc.querySelectorAll('a[href*="linkedin"]')).toHaveLength(0)
     }
   })
+
+  it('announces new-tab links to screen readers but not the mailto link', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const contact = doc.querySelector('#contact')
+      const blankLinks = contact?.querySelectorAll('a[target="_blank"]') ?? []
+      expect(blankLinks.length).toBeGreaterThan(0)
+      for (const link of blankLinks) {
+        expect(link.querySelector('.visually-hidden')).not.toBeNull()
+      }
+
+      const mailtoLink = contact?.querySelector('a[href^="mailto:"]')
+      expect(mailtoLink?.querySelector('.visually-hidden')).toBeNull()
+    }
+  })
 })

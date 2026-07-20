@@ -3,6 +3,7 @@ import type { SiteContent } from './types'
 export const en: SiteContent = {
   lang: 'en',
   dir: 'ltr',
+  opensInNewTab: 'opens in a new tab',
   meta: {
     title: 'Leah Dickman — Full Stack Developer & AI Solutions Engineer',
     description:
@@ -71,7 +72,6 @@ export const en: SiteContent = {
   },
   projects: {
     heading: 'Projects',
-    opensInNewTab: 'opens in a new tab',
     items: [
       {
         name: 'Rental Management System',

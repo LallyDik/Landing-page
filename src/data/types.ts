@@ -47,6 +47,7 @@ export interface ContactLink {
 export interface SiteContent {
   lang: 'he' | 'en'
   dir: 'rtl' | 'ltr'
+  opensInNewTab: string
   meta: { title: string; description: string }
   hero: {
     name: string
@@ -56,7 +57,7 @@ export interface SiteContent {
     ctaContact: string
   }
   capabilities: { heading: string; items: Capability[] }
-  projects: { heading: string; items: Project[]; opensInNewTab: string }
+  projects: { heading: string; items: Project[] }
   experience: { heading: string; items: ExperienceEntry[] }
   tech: { heading: string; groups: TechGroup[] }
   education: {
