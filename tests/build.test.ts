@@ -54,10 +54,13 @@ describe('document shell', () => {
 
 describe('hero', () => {
   it('shows exactly one h1 carrying the name', () => {
-    const h1s = heDoc.querySelectorAll('h1')
-    expect(h1s).toHaveLength(1)
-    expect(h1s[0].text).toContain('לאה דיקמן')
-    expect(enDoc.querySelector('h1')?.text).toContain('Leah Dickman')
+    const heH1s = heDoc.querySelectorAll('h1')
+    expect(heH1s).toHaveLength(1)
+    expect(heH1s[0].text).toContain('לאה דיקמן')
+
+    const enH1s = enDoc.querySelectorAll('h1')
+    expect(enH1s).toHaveLength(1)
+    expect(enH1s[0].text).toContain('Leah Dickman')
   })
 
   it('offers both calls to action as in-page anchors', () => {
@@ -72,8 +75,11 @@ describe('hero', () => {
     expect(enDoc.querySelector('a[href="/"]')).not.toBeNull()
   })
 
-  it('gives the logo meaningful alt text', () => {
-    const logo = heDoc.querySelector('img[src="/logo-ld.png"]')
-    expect(logo?.getAttribute('alt')?.length).toBeGreaterThan(0)
+  it('marks the logo decorative with a present but empty alt attribute', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const logo = doc.querySelector('img[src="/logo-ld.png"]')
+      expect(logo?.attributes.alt).toBeDefined()
+      expect(logo?.getAttribute('alt')).toBe('')
+    }
   })
 })

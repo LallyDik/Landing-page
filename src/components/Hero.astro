@@ -12,7 +12,7 @@ const { content } = Astro.props
 <header class="hero">
   <LangToggle toggle={content.langToggle} />
 
-  <img class="logo" src="/logo-ld.png" alt={content.hero.name} width="96" height="96" />
+  <img class="logo" src="/logo-ld.png" alt="" width="96" height="96" />
 
   <h1>{content.hero.name}</h1>
   <p class="title">{content.hero.title}</p>
@@ -35,7 +35,7 @@ const { content } = Astro.props
     content: '';
     position: absolute;
     inset-block-start: 2rem;
-    inset-inline-start: 50%;
+    left: 50%;
     transform: translateX(-50%);
     width: min(460px, 80vw);
     aspect-ratio: 1;
