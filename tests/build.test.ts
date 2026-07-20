@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { parse } from 'node-html-parser'
 import type { HTMLElement } from 'node-html-parser'
+import { he, en } from '../src/data/content'
 
 let heDoc: HTMLElement
 let enDoc: HTMLElement
@@ -158,16 +159,19 @@ describe('projects', () => {
 describe('experience, stack and education', () => {
   it('lists both roles with their bullets', () => {
     for (const doc of [heDoc, enDoc]) {
-      expect(doc.querySelectorAll('.experience-entry')).toHaveLength(2)
-      const bullets = doc.querySelectorAll('.experience-entry li')
-      expect(bullets.length).toBe(9)
+      const entries = doc.querySelectorAll('.experience-entry')
+      expect(entries).toHaveLength(2)
+      expect(entries[0].querySelectorAll('li')).toHaveLength(5)
+      expect(entries[1].querySelectorAll('li')).toHaveLength(4)
     }
   })
 
   it('spells out the Easy Tax backend stack', () => {
-    const text = heDoc.querySelector('#experience')?.text ?? ''
-    for (const token of ['C#', 'ASP.NET Core 8', 'EF Core', 'SQL Server', 'Clean Architecture']) {
-      expect(text).toContain(token)
+    for (const doc of [heDoc, enDoc]) {
+      const text = doc.querySelector('#experience')?.text ?? ''
+      for (const token of ['C#', 'ASP.NET Core 8', 'EF Core', 'SQL Server', 'Clean Architecture']) {
+        expect(text).toContain(token)
+      }
     }
   })
 
@@ -180,8 +184,22 @@ describe('experience, stack and education', () => {
   })
 
   it('renders education', () => {
-    for (const doc of [heDoc, enDoc]) {
-      expect(doc.querySelector('#education')).not.toBeNull()
+    for (const [doc, content] of [
+      [heDoc, he],
+      [enDoc, en],
+    ] as const) {
+      const section = doc.querySelector('#education')
+      expect(section).not.toBeNull()
+
+      const heading = section?.querySelector('h2')?.text.trim() ?? ''
+      const period = section?.querySelector('.period')?.text.trim() ?? ''
+      const institution = section?.querySelector('h3')?.text.trim() ?? ''
+      const detail = section?.querySelector('.detail')?.text.trim() ?? ''
+
+      expect(heading.length).toBeGreaterThan(0)
+      expect(period).toBe(content.education.period)
+      expect(institution).toBe(content.education.institution)
+      expect(detail).toBe(content.education.detail)
     }
   })
 })
