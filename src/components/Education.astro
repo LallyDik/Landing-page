@@ -1,0 +1,37 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+---
+
+<section id="education">
+  <h2 class="section-heading">{content.education.heading}</h2>
+
+  <p class="period">{content.education.period}</p>
+  <h3>{content.education.institution}</h3>
+  <p class="detail">{content.education.detail}</p>
+</section>
+
+<style>
+  .period {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  h3 {
+    margin-block: 0.2rem 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .detail {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+</style>

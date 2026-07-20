@@ -1,0 +1,70 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+---
+
+<section id="experience">
+  <h2 class="section-heading">{content.experience.heading}</h2>
+
+  <div class="entries">
+    {
+      content.experience.items.map((entry) => (
+        <article class="experience-entry">
+          <p class="period">{entry.period}</p>
+          <h3>
+            {entry.role} · <span class="org">{entry.org}</span>
+          </h3>
+          <ul>
+            {entry.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .entries {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .experience-entry {
+    border-inline-start: 2px solid var(--border);
+    padding-inline-start: 1.25rem;
+  }
+
+  .period {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  h3 {
+    margin-block: 0.2rem 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .org {
+    color: #c9b8f5;
+  }
+
+  ul {
+    margin: 0;
+    padding-inline-start: 1.1rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  li {
+    margin-block-end: 0.35rem;
+  }
+</style>

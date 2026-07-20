@@ -154,3 +154,34 @@ describe('projects', () => {
     }
   })
 })
+
+describe('experience, stack and education', () => {
+  it('lists both roles with their bullets', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelectorAll('.experience-entry')).toHaveLength(2)
+      const bullets = doc.querySelectorAll('.experience-entry li')
+      expect(bullets.length).toBe(9)
+    }
+  })
+
+  it('spells out the Easy Tax backend stack', () => {
+    const text = heDoc.querySelector('#experience')?.text ?? ''
+    for (const token of ['C#', 'ASP.NET Core 8', 'EF Core', 'SQL Server', 'Clean Architecture']) {
+      expect(text).toContain(token)
+    }
+  })
+
+  it('groups the tech stack with languages first', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const groups = doc.querySelectorAll('.tech-group')
+      expect(groups).toHaveLength(6)
+      expect(groups[0].querySelector('h3')?.text).toMatch(/שפות|Languages/)
+    }
+  })
+
+  it('renders education', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelector('#education')).not.toBeNull()
+    }
+  })
+})
