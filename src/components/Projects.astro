@@ -1,0 +1,26 @@
+---
+import type { SiteContent } from '../data/content'
+import ProjectCard from './ProjectCard.astro'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+---
+
+<section id="projects">
+  <h2 class="section-heading">{content.projects.heading}</h2>
+
+  <div class="grid">
+    {content.projects.items.map((project) => <ProjectCard project={project} />)}
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+</style>

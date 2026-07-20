@@ -107,3 +107,38 @@ describe('capabilities', () => {
     }
   })
 })
+
+describe('projects', () => {
+  it('renders five cards under an anchorable section', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelector('#projects')).not.toBeNull()
+      expect(doc.querySelectorAll('.project-card')).toHaveLength(5)
+    }
+  })
+
+  it('states a role on every card', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const roles = doc.querySelectorAll('.project-card .role')
+      expect(roles).toHaveLength(5)
+      for (const role of roles) {
+        expect(role.text.trim().length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('opens external links safely in a new tab', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const links = doc.querySelectorAll('.project-card a')
+      expect(links).toHaveLength(5)
+      for (const link of links) {
+        expect(link.getAttribute('target')).toBe('_blank')
+        expect(link.getAttribute('rel')).toContain('noopener')
+      }
+    }
+  })
+
+  it('leads with the independently built product', () => {
+    const first = heDoc.querySelector('.project-card h3')
+    expect(first?.text).toContain('ניהול שכירות')
+  })
+})
