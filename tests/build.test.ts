@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, statSync } from 'node:fs'
 import { parse } from 'node-html-parser'
 import type { HTMLElement } from 'node-html-parser'
 import { he, en } from '../src/data/content'
@@ -284,5 +284,44 @@ describe('structured data and crawling', () => {
 
     expect(sitemapContent).toContain('<loc>https://leahdick-dev.com/</loc>')
     expect(sitemapContent).toContain('<loc>https://leahdick-dev.com/en/</loc>')
+  })
+})
+
+describe('assets', () => {
+  it('keeps every shipped image under 200KB', () => {
+    for (const file of ['dist/logo-ld.png', 'dist/favicon.png', 'dist/og.png']) {
+      expect(existsSync(file)).toBe(true)
+      expect(statSync(file).size).toBeLessThan(200 * 1024)
+    }
+  })
+})
+
+describe('accessibility', () => {
+  it('gives every image alt text', () => {
+    for (const doc of [heDoc, enDoc]) {
+      for (const img of doc.querySelectorAll('img')) {
+        expect(img.getAttribute('alt')).not.toBeUndefined()
+      }
+    }
+  })
+
+  it('has no heading level skips', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const levels = doc
+        .querySelectorAll('h1, h2, h3')
+        .map((h) => Number(h.tagName[1]))
+      for (let i = 1; i < levels.length; i++) {
+        expect(levels[i] - levels[i - 1]).toBeLessThanOrEqual(1)
+      }
+    }
+  })
+
+  it('gives every link an accessible name', () => {
+    for (const doc of [heDoc, enDoc]) {
+      for (const a of doc.querySelectorAll('a')) {
+        const name = a.text.trim() || a.getAttribute('aria-label') || ''
+        expect(name.length).toBeGreaterThan(0)
+      }
+    }
   })
 })
