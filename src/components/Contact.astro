@@ -1,0 +1,66 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+
+const isExternal = (href: string) => href.startsWith('http')
+---
+
+<section id="contact">
+  <h2 class="section-heading">{content.contact.heading}</h2>
+
+  <ul class="links">
+    {
+      content.contact.links.map((link) => (
+        <li>
+          <a
+            class="card"
+            href={link.href}
+            target={isExternal(link.href) ? '_blank' : undefined}
+            rel={isExternal(link.href) ? 'noopener noreferrer' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a class="cv" href={content.contact.cvHref} download>
+    {content.contact.cvLabel}
+  </a>
+</section>
+
+<style>
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .links a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 1rem;
+    font-weight: 500;
+    word-break: break-word;
+  }
+
+  .cv {
+    display: inline-block;
+    text-decoration: none;
+    background: var(--iridescent);
+    color: #0b0b12;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.7rem 1.8rem;
+  }
+</style>

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import { parse } from 'node-html-parser'
 import type { HTMLElement } from 'node-html-parser'
 import { he, en } from '../src/data/content'
@@ -200,6 +200,35 @@ describe('experience, stack and education', () => {
       expect(period).toBe(content.education.period)
       expect(institution).toBe(content.education.institution)
       expect(detail).toBe(content.education.detail)
+    }
+  })
+})
+
+describe('contact', () => {
+  it('exposes all four channels', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const contact = doc.querySelector('#contact')
+      expect(contact).not.toBeNull()
+      expect(contact?.querySelector('a[href^="mailto:"]')).not.toBeNull()
+      expect(contact?.querySelector('a[href*="wa.me"]')).not.toBeNull()
+      expect(contact?.querySelector('a[href*="github.com"]')).not.toBeNull()
+      expect(contact?.querySelector('a[href*="duallin.com"]')).not.toBeNull()
+    }
+  })
+
+  it('offers the CV for the matching language', () => {
+    expect(heDoc.querySelector('a[href="/cv/leah-dickman-he.pdf"]')).not.toBeNull()
+    expect(enDoc.querySelector('a[href="/cv/leah-dickman-en.pdf"]')).not.toBeNull()
+  })
+
+  it('ships both CV files in the build output', () => {
+    expect(existsSync('dist/cv/leah-dickman-he.pdf')).toBe(true)
+    expect(existsSync('dist/cv/leah-dickman-en.pdf')).toBe(true)
+  })
+
+  it('never renders a linkedin link', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelectorAll('a[href*="linkedin"]')).toHaveLength(0)
     }
   })
 })
