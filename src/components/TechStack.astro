@@ -1,0 +1,44 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+---
+
+<section id="stack">
+  <h2 class="section-heading">{content.tech.heading}</h2>
+
+  <div class="grid">
+    {
+      content.tech.groups.map((group) => (
+        <div class="tech-group">
+          <h3>{group.label}</h3>
+          <ul class="tags">
+            {group.items.map((item) => (
+              <li class="tag">{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  h3 {
+    margin-block: 0 0.6rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+</style>

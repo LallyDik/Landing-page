@@ -1,0 +1,111 @@
+---
+import type { SiteContent } from '../data/content'
+import LangToggle from './LangToggle.astro'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+---
+
+<header class="hero">
+  <LangToggle toggle={content.langToggle} />
+
+  <img class="logo" src="/logo-ld.png" alt="" width="96" height="96" />
+
+  <h1>{content.hero.name}</h1>
+  <p class="title">{content.hero.title}</p>
+  <p class="positioning">{content.hero.positioning}</p>
+
+  <div class="actions">
+    <a class="btn primary" href="#projects">{content.hero.ctaProjects}</a>
+    <a class="btn" href="#contact">{content.hero.ctaContact}</a>
+  </div>
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(4rem, 12vw, 7rem) var(--space-section);
+    text-align: center;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(460px, 80vw);
+    aspect-ratio: 1;
+    background: var(--iridescent);
+    filter: blur(90px);
+    opacity: 0.22;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .logo,
+  h1,
+  .title,
+  .positioning,
+  .actions {
+    position: relative;
+  }
+
+  .logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 22px;
+    object-fit: cover;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    margin-block: 1rem 0.5rem;
+  }
+
+  .title {
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    background: var(--iridescent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0 auto;
+    font-weight: 600;
+  }
+
+  .positioning {
+    color: var(--text-muted);
+    margin: 1.25rem auto 0;
+    max-width: 52ch;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-block-start: 2rem;
+  }
+
+  .btn {
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+  }
+
+  .btn:hover {
+    border-color: rgba(201, 184, 245, 0.5);
+  }
+
+  .btn.primary {
+    background: var(--iridescent);
+    color: #0b0b12;
+    border-color: transparent;
+    font-weight: 600;
+  }
+</style>

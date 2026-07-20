@@ -1,0 +1,30 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: content.hero.name,
+  jobTitle: content.hero.title,
+  description: content.meta.description,
+  url: 'https://leahdick-dev.com',
+  email: 'ld3250803@gmail.com',
+  knowsLanguage: ['he', 'en'],
+  sameAs: content.contact.links
+    .filter((link) => link.href.startsWith('http') && !link.href.includes('wa.me'))
+    .map((link) => link.href),
+}
+// Escaping `<` prevents a `</script>` inside any schema value (e.g. a future
+// description or name) from prematurely closing this script tag and
+// spilling the remainder into the document. `<` is valid inside a JSON
+// string, so this cannot change how the payload parses.
+const json = JSON.stringify(schema).replace(/</g, '\\u003c')
+---
+
+<script type="application/ld+json" set:html={json} />

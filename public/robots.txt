@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://leahdick-dev.com/sitemap-index.xml

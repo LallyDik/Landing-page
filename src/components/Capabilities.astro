@@ -1,0 +1,91 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+---
+
+<section id="capabilities">
+  <h2 class="section-heading">{content.capabilities.heading}</h2>
+
+  <div class="grid">
+    {
+      content.capabilities.items.map((item) => (
+        <article class:list={['capability', 'card', item.kind]}>
+          <h3>{item.title}</h3>
+
+          {item.kind === 'featured' && (
+            <dl class="claims">
+              {item.claims.map((c) => (
+                <div class="claim-row">
+                  <dt class="claim">{c.claim}</dt>
+                  <dd class="evidence">{c.evidence}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          <ul class="tags">
+            {item.tags.map((tag) => (
+              <li class="tag">{tag}</li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .capability.featured {
+      grid-column: 1 / -1;
+    }
+  }
+
+  h3 {
+    margin-block: 0 1rem;
+    font-size: 1.2rem;
+  }
+
+  .claims {
+    margin: 0 0 1.25rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .claims {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .claim-row {
+    border-inline-start: 2px solid rgba(201, 184, 245, 0.45);
+    padding-inline-start: 0.9rem;
+  }
+
+  .claim {
+    font-weight: 600;
+    margin-block-end: 0.25rem;
+  }
+
+  .evidence {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.94rem;
+  }
+</style>
