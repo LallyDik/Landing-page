@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { readFileSync, existsSync, statSync } from 'node:fs'
+import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs'
+import { join, extname } from 'node:path'
 import { parse } from 'node-html-parser'
 import type { HTMLElement } from 'node-html-parser'
 import { he, en } from '../src/data/content'
@@ -11,6 +12,15 @@ beforeAll(() => {
   heDoc = parse(readFileSync('dist/index.html', 'utf8'))
   enDoc = parse(readFileSync('dist/en/index.html', 'utf8'))
 })
+
+// Astro hashes emitted filenames, so discover them rather than hardcoding
+// one — used both to find the built CSS and to scan dist/ for images.
+function listFilesRecursive(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = join(dir, entry.name)
+    return entry.isDirectory() ? listFilesRecursive(full) : [full]
+  })
+}
 
 describe('document shell', () => {
   it('sets lang and dir per route', () => {
@@ -47,8 +57,31 @@ describe('document shell', () => {
           .querySelectorAll('link[href^="http"]')
           .filter((l) => !['canonical', 'alternate'].includes(l.getAttribute('rel') ?? '')),
         ...doc.querySelectorAll('script[src^="http"]'),
+        ...doc.querySelectorAll('img[src^="http"]'),
       ]
       expect(external).toHaveLength(0)
+
+      // JSON-LD is structured data, not executable code — it legitimately
+      // embeds https:// URLs (schema.org context, profile links) with no
+      // network request implied, so it's excluded here. Any other inline
+      // <script> body is guarded: an embedded raw URL is exactly how a
+      // fetch()-based or document.write CDN regression would show up.
+      for (const script of doc.querySelectorAll('script:not([src])')) {
+        if (script.getAttribute('type') === 'application/ld+json') continue
+        expect(script.text).not.toMatch(/https?:\/\//)
+      }
+    }
+
+    // The likeliest real regression is invisible to the HTML-only checks
+    // above: someone swapping the self-hosted @font-face src for a CDN URL
+    // (or a background: url()) inside CSS. Read every built stylesheet from
+    // disk and check.
+    const cssDir = 'dist/_astro'
+    const cssFiles = readdirSync(cssDir).filter((f) => f.endsWith('.css'))
+    expect(cssFiles.length).toBeGreaterThan(0)
+    for (const file of cssFiles) {
+      const css = readFileSync(join(cssDir, file), 'utf8')
+      expect(css).not.toMatch(/https?:\/\//)
     }
   })
 })
@@ -139,8 +172,17 @@ describe('projects', () => {
   })
 
   it('leads with the independently built product', () => {
-    const first = heDoc.querySelector('.project-card h3')
-    expect(first?.text).toContain('ניהול שכירות')
+    // The lead project's name differs per language, so assert against the
+    // content module rather than a hardcoded string — a hardcoded Hebrew
+    // string only ever checked the Hebrew route, so an English regression
+    // that reordered projects.items would ship unnoticed.
+    for (const [doc, content] of [
+      [heDoc, he],
+      [enDoc, en],
+    ] as const) {
+      const first = doc.querySelector('.project-card h3')
+      expect(first?.text).toContain(content.projects.items[0].name)
+    }
   })
 
   it('hides the arrow glyph on project links from assistive technology', () => {
@@ -168,7 +210,15 @@ describe('experience, stack and education', () => {
 
   it('spells out the Easy Tax backend stack', () => {
     for (const doc of [heDoc, enDoc]) {
-      const text = doc.querySelector('#experience')?.text ?? ''
+      // Scoped to the Easy Tax entry specifically, not the whole
+      // #experience section — otherwise these tokens could migrate into the
+      // other role's bullets, or survive as a stray mention, while Easy
+      // Tax's own bullets are emptied, and this test would stay green.
+      const easyTaxEntry = doc
+        .querySelectorAll('.experience-entry')
+        .find((entry) => entry.text.includes('Easy Tax'))
+      expect(easyTaxEntry).toBeDefined()
+      const text = easyTaxEntry?.text ?? ''
       for (const token of ['C#', 'ASP.NET Core 8', 'EF Core', 'SQL Server', 'Clean Architecture']) {
         expect(text).toContain(token)
       }
@@ -289,9 +339,57 @@ describe('structured data and crawling', () => {
 
 describe('assets', () => {
   it('keeps every shipped image under 200KB', () => {
-    for (const file of ['dist/logo-ld.png', 'dist/favicon.png', 'dist/og.png']) {
-      expect(existsSync(file)).toBe(true)
+    // Scan dist/ recursively instead of naming files explicitly, so a
+    // fourth image added later is checked automatically instead of
+    // shipping unchecked at any size.
+    const imageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg', '.gif', '.avif'])
+    const images = listFilesRecursive('dist').filter((file) =>
+      imageExtensions.has(extname(file).toLowerCase())
+    )
+    // Guards against an empty/misconfigured scan passing vacuously.
+    expect(images.length).toBeGreaterThanOrEqual(3)
+    for (const file of images) {
       expect(statSync(file).size).toBeLessThan(200 * 1024)
+    }
+  })
+})
+
+describe('rtl correctness', () => {
+  it('uses logical CSS properties instead of physical left/right ones', () => {
+    // One stylesheet serves both the RTL Hebrew route and the LTR English
+    // route, which only works if directional spacing/alignment uses logical
+    // properties (padding-inline-start, inset-inline-end, text-align: start)
+    // instead of physical ones (padding-left, text-align: right) — a
+    // physical property mirrors incorrectly when dir="rtl".
+    const cssDir = 'dist/_astro'
+    const cssFiles = readdirSync(cssDir).filter((f) => f.endsWith('.css'))
+    expect(cssFiles.length).toBeGreaterThan(0)
+
+    for (const file of cssFiles) {
+      const css = readFileSync(join(cssDir, file), 'utf8')
+
+      for (const token of [
+        'margin-left',
+        'margin-right',
+        'padding-left',
+        'padding-right',
+        'border-left',
+        'border-right',
+      ]) {
+        expect(css).not.toContain(token)
+      }
+
+      expect(css).not.toMatch(/text-align\s*:\s*left\b/i)
+      expect(css).not.toMatch(/text-align\s*:\s*right\b/i)
+
+      // Bare left:/right: offsets are physical too. The one deliberate
+      // exception: Hero.astro centres its decorative glow with
+      // `left: 50%; transform: translateX(-50%)`. Centering is
+      // direction-symmetric, so a logical property is the wrong tool there
+      // — strip exactly that declaration before scanning for anything else,
+      // so e.g. `left: 0` or `padding-left: 1rem` still fail.
+      const withoutCenteringException = css.replace(/left\s*:\s*50%/gi, '')
+      expect(withoutCenteringException).not.toMatch(/(?<![a-z-])(left|right)\s*:/i)
     }
   })
 })
