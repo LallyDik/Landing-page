@@ -15,7 +15,11 @@ const { content } = Astro.props
   <div class="grid">
     {
       content.projects.items.map((project) => (
-        <ProjectCard project={project} opensInNewTab={content.opensInNewTab} />
+        <ProjectCard
+          project={project}
+          opensInNewTab={content.opensInNewTab}
+          repoLabel={content.projects.repoLabel}
+        />
       ))
     }
   </div>

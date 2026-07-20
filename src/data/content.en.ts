@@ -72,6 +72,7 @@ export const en: SiteContent = {
   },
   projects: {
     heading: 'Projects',
+    repoLabel: 'Source code',
     items: [
       {
         name: 'Rental Management System',
@@ -80,6 +81,7 @@ export const en: SiteContent = {
         role: 'Independent product · built end to end in code',
         tech: ['React', 'TypeScript', 'Supabase'],
         url: 'https://nihul-schhirut.lovable.app/',
+        repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
       },
       {
         name: 'QSellerAI',

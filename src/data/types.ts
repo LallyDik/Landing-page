@@ -24,6 +24,7 @@ export interface Project {
   role: string
   tech: string[]
   url: string
+  repoUrl?: string
 }
 
 export interface ExperienceEntry {
@@ -57,7 +58,7 @@ export interface SiteContent {
     ctaContact: string
   }
   capabilities: { heading: string; items: Capability[] }
-  projects: { heading: string; items: Project[] }
+  projects: { heading: string; items: Project[]; repoLabel: string }
   experience: { heading: string; items: ExperienceEntry[] }
   tech: { heading: string; groups: TechGroup[] }
   education: {

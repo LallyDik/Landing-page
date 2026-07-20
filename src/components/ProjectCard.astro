@@ -4,9 +4,10 @@ import type { Project } from '../data/content'
 interface Props {
   project: Project
   opensInNewTab: string
+  repoLabel: string
 }
 
-const { project, opensInNewTab } = Astro.props
+const { project, opensInNewTab, repoLabel } = Astro.props
 ---
 
 <article class="project-card card">
@@ -18,10 +19,21 @@ const { project, opensInNewTab } = Astro.props
     {project.tech.map((tech) => <li class="tag">{tech}</li>)}
   </ul>
 
-  <a href={project.url} target="_blank" rel="noopener noreferrer">
-    {project.name} <span aria-hidden="true">↗</span>
-    <span class="visually-hidden">({opensInNewTab})</span>
-  </a>
+  <div class="links">
+    <a href={project.url} target="_blank" rel="noopener noreferrer">
+      {project.name} <span aria-hidden="true">↗</span>
+      <span class="visually-hidden">({opensInNewTab})</span>
+    </a>
+
+    {
+      project.repoUrl && (
+        <a class="repo-link" href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+          {repoLabel} <span aria-hidden="true">↗</span>
+          <span class="visually-hidden">({opensInNewTab})</span>
+        </a>
+      )
+    }
+  </div>
 </article>
 
 <style>
@@ -50,8 +62,14 @@ const { project, opensInNewTab } = Astro.props
     flex-grow: 1;
   }
 
-  a {
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     margin-block-start: 0.4rem;
+  }
+
+  a {
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
@@ -60,5 +78,18 @@ const { project, opensInNewTab } = Astro.props
 
   a:hover {
     text-decoration: underline;
+  }
+
+  .repo-link {
+    margin-inline-start: 0.9rem;
+    padding-inline-start: 0.9rem;
+    border-inline-start: 1px solid var(--border);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .repo-link:hover {
+    color: var(--text);
   }
 </style>

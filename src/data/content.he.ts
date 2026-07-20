@@ -72,6 +72,7 @@ export const he: SiteContent = {
   },
   projects: {
     heading: 'פרויקטים',
+    repoLabel: 'קוד המקור',
     items: [
       {
         name: 'מערכת ניהול שכירות',
@@ -80,6 +81,7 @@ export const he: SiteContent = {
         role: 'מוצר עצמאי · פיתוח מלא בקוד',
         tech: ['React', 'TypeScript', 'Supabase'],
         url: 'https://nihul-schhirut.lovable.app/',
+        repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
       },
       {
         name: 'QSellerAI',

@@ -163,7 +163,9 @@ describe('projects', () => {
   it('opens external links safely in a new tab', () => {
     for (const doc of [heDoc, enDoc]) {
       const links = doc.querySelectorAll('.project-card a')
-      expect(links).toHaveLength(5)
+      // Five cards each contribute their live-product link, plus one repo
+      // link on the rental management card.
+      expect(links).toHaveLength(6)
       for (const link of links) {
         expect(link.getAttribute('target')).toBe('_blank')
         expect(link.getAttribute('rel')).toContain('noopener')
@@ -187,13 +189,44 @@ describe('projects', () => {
 
   it('hides the arrow glyph on project links from assistive technology', () => {
     for (const doc of [heDoc, enDoc]) {
+      // This asserts per link, not per card, so the rental card's extra repo
+      // link (its own arrow, alongside the live-product link's arrow) is
+      // covered by the same loop rather than breaking an assumption of one
+      // arrow per card.
       const links = doc.querySelectorAll('.project-card a')
-      expect(links).toHaveLength(5)
+      expect(links).toHaveLength(6)
       for (const link of links) {
         const arrow = link.querySelector('span[aria-hidden="true"]')
         expect(arrow).not.toBeNull()
         expect(arrow?.text).toContain('↗')
       }
+    }
+  })
+
+  it('links the rental management card to its source repository', () => {
+    for (const [doc, content] of [
+      [heDoc, he],
+      [enDoc, en],
+    ] as const) {
+      const repoLinks = doc.querySelectorAll('.project-card a[href="https://github.com/LallyDik/bayit-yisraeli-menahal"]')
+      expect(repoLinks).toHaveLength(1)
+
+      const repoLink = repoLinks[0]
+      expect(repoLink.getAttribute('target')).toBe('_blank')
+      expect(repoLink.getAttribute('rel')).toContain('noopener')
+      expect(repoLink.querySelector('.visually-hidden')).not.toBeNull()
+
+      // Every other project card has no repoUrl in the content module, so
+      // none of them should render a repo link.
+      const cards = doc.querySelectorAll('.project-card')
+      expect(cards).toHaveLength(content.projects.items.length)
+      const cardsWithRepoLink = cards.filter(
+        (card) => card.querySelectorAll('a[href="https://github.com/LallyDik/bayit-yisraeli-menahal"]').length > 0
+      )
+      expect(cardsWithRepoLink).toHaveLength(1)
+
+      const projectsWithRepoUrl = content.projects.items.filter((p) => p.repoUrl)
+      expect(projectsWithRepoUrl).toHaveLength(1)
     }
   })
 })
