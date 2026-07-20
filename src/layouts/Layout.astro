@@ -1,0 +1,37 @@
+---
+import type { SiteContent } from '../data/content'
+import '../styles/global.css'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+const site = 'https://leahdick-dev.com'
+const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
+---
+
+<!doctype html>
+<html lang={content.lang} dir={content.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{content.meta.title}</title>
+    <meta name="description" content={content.meta.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="he" href={`${site}/`} />
+    <link rel="alternate" hreflang="en" href={`${site}/en`} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <meta property="og:title" content={content.meta.title} />
+    <meta property="og:description" content={content.meta.description} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${site}/og.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>
