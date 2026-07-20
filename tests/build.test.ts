@@ -264,5 +264,25 @@ describe('structured data and crawling', () => {
   it('emits a sitemap and robots file', () => {
     expect(existsSync('dist/sitemap-index.xml')).toBe(true)
     expect(existsSync('dist/robots.txt')).toBe(true)
+
+    const robots = readFileSync('dist/robots.txt', 'utf8')
+    expect(robots).toContain('Sitemap: https://leahdick-dev.com/sitemap-index.xml')
+
+    // The index file only lists child sitemap(s); the actual page URLs live
+    // in whichever child file(s) it points at, so follow the reference
+    // rather than assuming a filename.
+    const index = readFileSync('dist/sitemap-index.xml', 'utf8')
+    const childLocs = [...index.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1])
+    expect(childLocs.length).toBeGreaterThan(0)
+
+    const childPages = childLocs.map((loc) => {
+      const path = new URL(loc).pathname
+      expect(existsSync(`dist${path}`)).toBe(true)
+      return readFileSync(`dist${path}`, 'utf8')
+    })
+    const sitemapContent = childPages.join('\n')
+
+    expect(sitemapContent).toContain('<loc>https://leahdick-dev.com/</loc>')
+    expect(sitemapContent).toContain('<loc>https://leahdick-dev.com/en/</loc>')
   })
 })
