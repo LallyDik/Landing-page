@@ -246,3 +246,23 @@ describe('contact', () => {
     }
   })
 })
+
+describe('structured data and crawling', () => {
+  it('embeds a valid Person schema on both routes', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const script = doc.querySelector('script[type="application/ld+json"]')
+      expect(script).not.toBeNull()
+      const data = JSON.parse(script!.text)
+      expect(data['@type']).toBe('Person')
+      expect(data.name.length).toBeGreaterThan(0)
+      expect(data.url).toBe('https://leahdick-dev.com')
+      expect(Array.isArray(data.sameAs)).toBe(true)
+      expect(data.sameAs).toContain('https://github.com/LallyDik')
+    }
+  })
+
+  it('emits a sitemap and robots file', () => {
+    expect(existsSync('dist/sitemap-index.xml')).toBe(true)
+    expect(existsSync('dist/robots.txt')).toBe(true)
+  })
+})

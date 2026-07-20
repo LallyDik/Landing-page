@@ -1,5 +1,6 @@
 ---
 import type { SiteContent } from '../data/content'
+import PersonSchema from '../components/PersonSchema.astro'
 import '../styles/global.css'
 
 interface Props {
@@ -28,6 +29,7 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={`${site}/og.png`} />
     <meta name="twitter:card" content="summary_large_image" />
+    <PersonSchema content={content} />
   </head>
   <body>
     <main>

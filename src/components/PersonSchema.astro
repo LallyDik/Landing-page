@@ -1,0 +1,25 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  content: SiteContent
+}
+
+const { content } = Astro.props
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: content.hero.name,
+  jobTitle: content.hero.title,
+  description: content.meta.description,
+  url: 'https://leahdick-dev.com',
+  email: 'ld3250803@gmail.com',
+  knowsLanguage: ['he', 'en'],
+  sameAs: content.contact.links
+    .filter((link) => link.href.startsWith('http') && !link.href.includes('wa.me'))
+    .map((link) => link.href),
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
