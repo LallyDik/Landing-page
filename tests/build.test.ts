@@ -141,4 +141,16 @@ describe('projects', () => {
     const first = heDoc.querySelector('.project-card h3')
     expect(first?.text).toContain('ניהול שכירות')
   })
+
+  it('hides the arrow glyph on project links from assistive technology', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const links = doc.querySelectorAll('.project-card a')
+      expect(links).toHaveLength(5)
+      for (const link of links) {
+        const arrow = link.querySelector('span[aria-hidden="true"]')
+        expect(arrow).not.toBeNull()
+        expect(arrow?.text).toContain('↗')
+      }
+    }
+  })
 })

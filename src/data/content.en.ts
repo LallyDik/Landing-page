@@ -71,6 +71,7 @@ export const en: SiteContent = {
   },
   projects: {
     heading: 'Projects',
+    opensInNewTab: 'opens in a new tab',
     items: [
       {
         name: 'Rental Management System',

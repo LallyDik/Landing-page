@@ -71,6 +71,7 @@ export const he: SiteContent = {
   },
   projects: {
     heading: 'פרויקטים',
+    opensInNewTab: 'נפתח בלשונית חדשה',
     items: [
       {
         name: 'מערכת ניהול שכירות',

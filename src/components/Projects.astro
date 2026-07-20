@@ -13,7 +13,11 @@ const { content } = Astro.props
   <h2 class="section-heading">{content.projects.heading}</h2>
 
   <div class="grid">
-    {content.projects.items.map((project) => <ProjectCard project={project} />)}
+    {
+      content.projects.items.map((project) => (
+        <ProjectCard project={project} opensInNewTab={content.projects.opensInNewTab} />
+      ))
+    }
   </div>
 </section>
 

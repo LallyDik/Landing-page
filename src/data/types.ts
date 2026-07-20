@@ -56,7 +56,7 @@ export interface SiteContent {
     ctaContact: string
   }
   capabilities: { heading: string; items: Capability[] }
-  projects: { heading: string; items: Project[] }
+  projects: { heading: string; items: Project[]; opensInNewTab: string }
   experience: { heading: string; items: ExperienceEntry[] }
   tech: { heading: string; groups: TechGroup[] }
   education: {

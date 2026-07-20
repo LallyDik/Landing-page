@@ -3,9 +3,10 @@ import type { Project } from '../data/content'
 
 interface Props {
   project: Project
+  opensInNewTab: string
 }
 
-const { project } = Astro.props
+const { project, opensInNewTab } = Astro.props
 ---
 
 <article class="project-card card">
@@ -18,7 +19,8 @@ const { project } = Astro.props
   </ul>
 
   <a href={project.url} target="_blank" rel="noopener noreferrer">
-    {project.name} ↗
+    {project.name} <span aria-hidden="true">↗</span>
+    <span class="visually-hidden">({opensInNewTab})</span>
   </a>
 </article>
 
@@ -46,12 +48,6 @@ const { project } = Astro.props
     color: var(--text-muted);
     font-size: 0.95rem;
     flex-grow: 1;
-  }
-
-  .tags {
-    list-style: none;
-    padding: 0;
-    margin: 0;
   }
 
   a {
