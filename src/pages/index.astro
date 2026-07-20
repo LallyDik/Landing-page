@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
 import { he } from '../data/content'
 ---
 
-<Layout content={he} />
+<Layout content={he}>
+  <Hero content={he} />
+</Layout>

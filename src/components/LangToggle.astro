@@ -1,0 +1,30 @@
+---
+import type { SiteContent } from '../data/content'
+
+interface Props {
+  toggle: SiteContent['langToggle']
+}
+
+const { toggle } = Astro.props
+---
+
+<a class="lang-toggle" href={toggle.href}>{toggle.label}</a>
+
+<style>
+  .lang-toggle {
+    position: absolute;
+    inset-block-start: 1.25rem;
+    inset-inline-end: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+  }
+
+  .lang-toggle:hover {
+    color: var(--text);
+    border-color: rgba(201, 184, 245, 0.5);
+  }
+</style>

@@ -51,3 +51,29 @@ describe('document shell', () => {
     }
   })
 })
+
+describe('hero', () => {
+  it('shows exactly one h1 carrying the name', () => {
+    const h1s = heDoc.querySelectorAll('h1')
+    expect(h1s).toHaveLength(1)
+    expect(h1s[0].text).toContain('לאה דיקמן')
+    expect(enDoc.querySelector('h1')?.text).toContain('Leah Dickman')
+  })
+
+  it('offers both calls to action as in-page anchors', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelector('a[href="#projects"]')).not.toBeNull()
+      expect(doc.querySelector('a[href="#contact"]')).not.toBeNull()
+    }
+  })
+
+  it('links each route to the other language', () => {
+    expect(heDoc.querySelector('a[href="/en"]')).not.toBeNull()
+    expect(enDoc.querySelector('a[href="/"]')).not.toBeNull()
+  })
+
+  it('gives the logo meaningful alt text', () => {
+    const logo = heDoc.querySelector('img[src="/logo-ld.png"]')
+    expect(logo?.getAttribute('alt')?.length).toBeGreaterThan(0)
+  })
+})
