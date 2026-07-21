@@ -1,16 +1,33 @@
+@import '@fontsource-variable/rubik';
 @import '@fontsource-variable/heebo';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
 
 :root {
-  --bg: #14142a;
-  --surface: #1e1e3a;
-  --border: rgba(255, 255, 255, 0.11);
-  --text: #eef0f8;
-  --text-muted: #a6a6c4;
-  --iridescent: linear-gradient(135deg, #f8b5e0, #c9b8f5, #a8f0e0, #faf3a0);
+  /* Holographic identity, grown-up: deep near-black base, cool pearl light
+     bands, a saturated violet accent, and the iridescent gradient reserved
+     as the one signature moment. --accent is redefined per band below so it
+     stays legible on both the pearl and the ink. --cream/--ink names are
+     kept as the light/dark band roles. */
+  --cream: #efe9f4; /* pearl (light band) */
+  --ink: #171320; /* deep violet-black (dark band) */
 
-  --space-section: clamp(3.5rem, 8vw, 6rem);
-  --radius: 14px;
-  --measure: 68ch;
+  --accent: #7b3fe4; /* violet — default, tuned for light bands */
+
+  --ink-muted: rgba(23, 19, 32, 0.6);
+  --cream-muted: rgba(239, 233, 244, 0.66);
+  --line-on-cream: rgba(23, 19, 32, 0.15);
+  --line-on-ink: rgba(239, 233, 244, 0.16);
+
+  --iridescent: linear-gradient(135deg, #f25caf, #8e63f0, #3fd0d0, #efce55);
+
+  --font-display: 'Rubik Variable', system-ui, sans-serif;
+  --font-body: 'Heebo Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --wrap: 1200px;
+  --measure: 60ch;
+  --radius: 4px;
 }
 
 *,
@@ -21,45 +38,24 @@
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Heebo Variable', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Ambient iridescent field behind everything — soft pastel glows over the
-   lifted indigo base, so the page reads as colourful rather than near-black.
-   Percentage positions (not left/right keywords) keep it direction-neutral
-   and clear of the RTL physical-property guard. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(58vw 58vw at 14% 10%, rgba(248, 181, 224, 0.16), transparent 62%),
-    radial-gradient(52vw 52vw at 88% 22%, rgba(168, 240, 224, 0.13), transparent 60%),
-    radial-gradient(60vw 60vw at 78% 94%, rgba(201, 184, 245, 0.16), transparent 62%),
-    radial-gradient(46vw 46vw at 8% 82%, rgba(250, 243, 160, 0.10), transparent 60%);
-}
-
 main {
-  max-width: 1100px;
-  margin-inline: auto;
-  padding-inline: clamp(1rem, 5vw, 2.5rem);
-}
-
-section {
-  padding-block: var(--space-section);
+  width: 100%;
 }
 
 h1,
 h2,
 h3 {
-  line-height: 1.25;
+  font-family: var(--font-display);
+  line-height: 1.05;
   text-wrap: balance;
+  font-weight: 700;
 }
 
 p {
@@ -71,53 +67,145 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid #c9b8f5;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-.section-heading {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  margin-block-end: 2rem;
-  display: inline-block;
+/* --- Full-bleed colour bands ---------------------------------------- */
+
+.band {
+  padding-block: clamp(3.5rem, 8vw, 7rem);
+  padding-inline: clamp(1.25rem, 6vw, 5rem);
 }
 
-.section-heading::after {
-  content: '';
-  display: block;
-  height: 2px;
-  margin-block-start: 0.5rem;
-  background: var(--iridescent);
-  border-radius: 2px;
+.band--cream {
+  background: var(--cream);
+  color: var(--ink);
+  --accent: #7b3fe4; /* deeper violet — legible on pearl */
 }
+
+.band--ink {
+  background: var(--ink);
+  color: var(--cream);
+  --accent: #b79bf5; /* lighter violet — legible on the deep base */
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin-inline: auto;
+}
+
+/* --- Section heading: mono numbered eyebrow + big display title ------ */
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+
+.section-head {
+  margin-block-end: clamp(2rem, 5vw, 3.5rem);
+}
+
+.section-head__top {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-block-end: 0.9rem;
+}
+
+.section-head__top .rule {
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.22;
+}
+
+.section-heading {
+  margin: 0;
+  font-size: clamp(1.9rem, 4.6vw, 3.1rem);
+  letter-spacing: -0.01em;
+}
+
+/* --- Cards -------------------------------------------------------- */
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: transparent;
+  border: 1px solid var(--line-on-cream);
   border-radius: var(--radius);
-  padding: 1.5rem;
-  transition: transform 160ms ease, border-color 160ms ease;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(201, 184, 245, 0.5);
+.band--ink .card {
+  border-color: var(--line-on-ink);
 }
+
+/* --- Tags --------------------------------------------------------- */
 
 .tags {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
 .tag {
-  display: inline-block;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--line-on-cream);
   border-radius: 999px;
-  padding: 0.15rem 0.7rem;
-  margin: 0.15rem;
 }
+
+.band--ink .tag {
+  border-color: var(--line-on-ink);
+  color: var(--cream-muted);
+}
+
+.band--cream .tag {
+  color: var(--ink-muted);
+}
+
+/* --- Buttons ------------------------------------------------------ */
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.7rem 1.6rem;
+  border: 1px solid currentColor;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.btn--solid {
+  background: var(--iridescent);
+  color: #171320;
+  border-color: transparent;
+}
+
+.btn--solid:hover {
+  transform: translateY(-2px);
+}
+
+.btn--ghost:hover {
+  background: currentColor;
+}
+
+.btn--ghost:hover > span {
+  color: var(--cream);
+}
+
+/* --- Utility ------------------------------------------------------ */
 
 .visually-hidden {
   position: absolute;
@@ -131,15 +219,12 @@ a {
   border: 0;
 }
 
-/* Sections fade in as they enter the viewport, with zero JavaScript.
-   Browsers without scroll-driven animation support simply show the
-   content immediately, which is the correct fallback. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    section {
+    .band {
       animation: reveal linear both;
       animation-timeline: view();
-      animation-range: entry 10% cover 22%;
+      animation-range: entry 8% cover 20%;
     }
   }
 }
@@ -147,7 +232,7 @@ a {
 @keyframes reveal {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;

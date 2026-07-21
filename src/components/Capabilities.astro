@@ -1,5 +1,6 @@
 ---
 import type { SiteContent } from '../data/content'
+import SectionHead from './SectionHead.astro'
 
 interface Props {
   content: SiteContent
@@ -8,36 +9,38 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<section id="capabilities">
-  <h2 class="section-heading">{content.capabilities.heading}</h2>
+<section id="capabilities" class="band band--ink">
+  <div class="wrap">
+    <SectionHead num="01" title={content.capabilities.heading} />
 
-  <div class="grid">
-    {
-      content.capabilities.items.map((item) => (
-        <article class:list={['capability', 'card', item.kind]}>
-          <h3>{item.title}</h3>
+    <div class="grid">
+      {
+        content.capabilities.items.map((item) => (
+          <article class:list={['capability', 'card', item.kind]}>
+            <h3>{item.title}</h3>
 
-          {item.kind === 'compact' && <p class="lead">{item.lead}</p>}
+            {item.kind === 'compact' && <p class="lead">{item.lead}</p>}
 
-          {item.kind === 'featured' && (
-            <dl class="areas">
-              {item.areas.map((a) => (
-                <div class="area-row">
-                  <dt class="area">{a.area}</dt>
-                  <dd class="detail">{a.detail}</dd>
-                </div>
+            {item.kind === 'featured' && (
+              <dl class="areas">
+                {item.areas.map((a) => (
+                  <div class="area-row">
+                    <dt class="area">{a.area}</dt>
+                    <dd class="detail">{a.detail}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+
+            <ul class="tags">
+              {item.tags.map((tag) => (
+                <li class="tag">{tag}</li>
               ))}
-            </dl>
-          )}
-
-          <ul class="tags">
-            {item.tags.map((tag) => (
-              <li class="tag">{tag}</li>
-            ))}
-          </ul>
-        </article>
-      ))
-    }
+            </ul>
+          </article>
+        ))
+      }
+    </div>
   </div>
 </section>
 
@@ -58,9 +61,17 @@ const { content } = Astro.props
     }
   }
 
+  .capability {
+    padding: 1.75rem;
+  }
+
+  .capability.featured {
+    border-color: var(--accent);
+  }
+
   h3 {
     margin-block: 0 1rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .compact h3 {
@@ -68,16 +79,16 @@ const { content } = Astro.props
   }
 
   .lead {
-    margin: 0 0 1rem;
-    color: var(--text-muted);
-    font-size: 0.94rem;
+    margin: 0 0 1.25rem;
+    color: var(--cream-muted);
+    font-size: 0.95rem;
     max-width: none;
   }
 
   .areas {
-    margin: 0 0 1.25rem;
+    margin: 0 0 1.5rem;
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
   }
 
   @media (min-width: 640px) {
@@ -87,18 +98,20 @@ const { content } = Astro.props
   }
 
   .area-row {
-    border-inline-start: 2px solid rgba(201, 184, 245, 0.45);
+    border-inline-start: 2px solid var(--accent);
     padding-inline-start: 0.9rem;
   }
 
   .area {
+    font-family: var(--font-display);
     font-weight: 600;
-    margin-block-end: 0.25rem;
+    margin-block-end: 0.3rem;
   }
 
   .detail {
     margin: 0;
-    color: var(--text-muted);
-    font-size: 0.94rem;
+    color: var(--cream-muted);
+    font-size: 0.92rem;
+    max-width: none;
   }
 </style>

@@ -1,5 +1,6 @@
 ---
 import type { SiteContent } from '../data/content'
+import SectionHead from './SectionHead.astro'
 
 interface Props {
   content: SiteContent
@@ -8,47 +9,47 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<section id="stack">
-  <h2 class="section-heading">{content.tech.heading}</h2>
+<section id="stack" class="band band--cream">
+  <div class="wrap">
+    <SectionHead num="04" title={content.tech.heading} />
 
-  <div class="grid">
-    {
-      content.tech.groups.map((group) => (
-        <div class="tech-group">
-          <h3>{group.label}</h3>
-          <ul class="tags">
-            {group.items.map((item) => (
-              <li class="tag">{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))
-    }
+    <div class="grid">
+      {
+        content.tech.groups.map((group) => (
+          <div class="tech-group">
+            <h3>{group.label}</h3>
+            <ul class="tags">
+              {group.items.map((item) => (
+                <li class="tag">{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <style>
   .grid {
     display: grid;
-    gap: 1.5rem 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   }
 
   .tech-group {
     text-align: start;
-    border-inline-start: 2px solid rgba(201, 184, 245, 0.45);
-    padding-inline-start: 1rem;
   }
 
   h3 {
-    margin-block: 0 0.6rem;
-    font-size: 0.8rem;
+    margin-block: 0 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #c9b8f5;
-  }
-
-  .tags {
-    justify-content: flex-start;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    padding-block-end: 0.6rem;
+    border-block-end: 1px solid var(--line-on-cream);
   }
 </style>

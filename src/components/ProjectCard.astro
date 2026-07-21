@@ -47,6 +47,15 @@ const { project, opensInNewTab, repoLabel, featured = false } = Astro.props
     flex-direction: column;
     padding: 0;
     overflow: hidden;
+    background: #f6f2fb;
+    transition:
+      transform 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
   }
 
   .cover {
@@ -56,7 +65,7 @@ const { project, opensInNewTab, repoLabel, featured = false } = Astro.props
     aspect-ratio: 76 / 46;
     object-fit: cover;
     object-position: top;
-    border-block-end: 1px solid var(--border);
+    border-block-end: 1px solid var(--line-on-cream);
   }
 
   .body {
@@ -69,21 +78,23 @@ const { project, opensInNewTab, repoLabel, featured = false } = Astro.props
 
   h3 {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
   }
 
   .role {
     margin: 0;
-    font-size: 0.86rem;
-    font-weight: 600;
-    color: #c9b8f5;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    color: var(--accent);
   }
 
   .description {
     margin: 0;
-    color: var(--text-muted);
+    color: var(--ink-muted);
     font-size: 0.95rem;
     flex-grow: 1;
+    max-width: none;
   }
 
   .links {
@@ -97,24 +108,24 @@ const { project, opensInNewTab, repoLabel, featured = false } = Astro.props
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
-    color: var(--text);
+    color: var(--ink);
   }
 
   a:hover {
-    text-decoration: underline;
+    color: var(--accent);
   }
 
   .repo-link {
     margin-inline-start: 0.9rem;
     padding-inline-start: 0.9rem;
-    border-inline-start: 1px solid var(--border);
+    border-inline-start: 1px solid var(--line-on-cream);
     font-size: 0.85rem;
     font-weight: 500;
-    color: var(--text-muted);
+    color: var(--ink-muted);
   }
 
   .repo-link:hover {
-    color: var(--text);
+    color: var(--accent);
   }
 
   /* Wide featured card: the lead project runs full width with the cover
@@ -130,7 +141,7 @@ const { project, opensInNewTab, repoLabel, featured = false } = Astro.props
       aspect-ratio: auto;
       align-self: stretch;
       border-block-end: none;
-      border-inline-end: 1px solid var(--border);
+      border-inline-end: 1px solid var(--line-on-cream);
     }
 
     .project-card.featured .body {

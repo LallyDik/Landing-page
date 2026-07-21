@@ -1,6 +1,7 @@
 ---
 import type { SiteContent } from '../data/content'
 import ProjectCard from './ProjectCard.astro'
+import SectionHead from './SectionHead.astro'
 
 interface Props {
   content: SiteContent
@@ -9,20 +10,22 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<section id="projects">
-  <h2 class="section-heading">{content.projects.heading}</h2>
+<section id="projects" class="band band--cream">
+  <div class="wrap">
+    <SectionHead num="02" title={content.projects.heading} />
 
-  <div class="grid">
-    {
-      content.projects.items.map((project, i) => (
-        <ProjectCard
-          project={project}
-          opensInNewTab={content.opensInNewTab}
-          repoLabel={content.projects.repoLabel}
-          featured={i === 0}
-        />
-      ))
-    }
+    <div class="grid">
+      {
+        content.projects.items.map((project, i) => (
+          <ProjectCard
+            project={project}
+            opensInNewTab={content.opensInNewTab}
+            repoLabel={content.projects.repoLabel}
+            featured={i === 0}
+          />
+        ))
+      }
+    </div>
   </div>
 </section>
 

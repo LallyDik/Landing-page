@@ -109,11 +109,13 @@ describe('hero', () => {
     expect(enDoc.querySelector('a[href="/"]')).not.toBeNull()
   })
 
-  it('marks the logo decorative with a present but empty alt attribute', () => {
+  it('marks the decorative hero art aria-hidden', () => {
     for (const doc of [heDoc, enDoc]) {
-      const logo = doc.querySelector('img[src="/logo-ld.png"]')
-      expect(logo?.attributes.alt).toBeDefined()
-      expect(logo?.getAttribute('alt')).toBe('')
+      // The holographic panel is purely decorative — the heading already
+      // carries the identity — so assistive tech must skip it.
+      const art = doc.querySelector('.hero-art')
+      expect(art).not.toBeNull()
+      expect(art?.getAttribute('aria-hidden')).toBe('true')
     }
   })
 })

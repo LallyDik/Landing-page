@@ -11,132 +11,103 @@ const { content } = Astro.props
 const isExternal = (href: string) => href.startsWith('http')
 ---
 
-<header class="hero">
+<header class="band band--cream hero">
   <LangToggle toggle={content.langToggle} />
 
-  <img class="logo" src="/logo-ld.png" alt="" width="112" height="112" />
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="kicker">Full Stack · AI Solutions</p>
+      <h1>{content.hero.name}</h1>
+      <p class="title">{content.hero.title}</p>
+      <p class="positioning">{content.hero.positioning}</p>
 
-  <h1>{content.hero.name}</h1>
-  <p class="title">{content.hero.title}</p>
-  <p class="positioning">{content.hero.positioning}</p>
+      <div class="actions">
+        <a class="btn btn--solid" href="#projects"><span>{content.hero.ctaProjects}</span></a>
+        <a class="btn btn--ghost" href="#contact"><span>{content.hero.ctaContact}</span></a>
+      </div>
 
-  <div class="actions">
-    <a class="btn primary" href="#projects">{content.hero.ctaProjects}</a>
-    <a class="btn" href="#contact">{content.hero.ctaContact}</a>
+      <ul class="socials">
+        {
+          content.contact.links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-label={
+                  isExternal(link.href) ? `${link.label} (${content.opensInNewTab})` : link.label
+                }
+                target={isExternal(link.href) ? '_blank' : undefined}
+                rel={isExternal(link.href) ? 'noopener noreferrer' : undefined}
+              >
+                <span aria-hidden="true" set:html={contactIcons[link.kind]} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- Signature: an abstract holographic panel — the iridescent colours as
+         an oil-slick sheen, the one shimmering moment against the flat base. -->
+    <div class="hero-art" aria-hidden="true">
+      <div class="foil"></div>
+    </div>
   </div>
-
-  <ul class="socials">
-    {
-      content.contact.links.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            aria-label={
-              isExternal(link.href) ? `${link.label} (${content.opensInNewTab})` : link.label
-            }
-            target={isExternal(link.href) ? '_blank' : undefined}
-            rel={isExternal(link.href) ? 'noopener noreferrer' : undefined}
-          >
-            <span aria-hidden="true" set:html={contactIcons[link.kind]} />
-          </a>
-        </li>
-      ))
-    }
-  </ul>
 </header>
 
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(3.5rem, 10vw, 6rem) clamp(2.5rem, 6vw, 4rem);
-    padding-inline: 1.25rem;
-    text-align: center;
+    padding-block: clamp(4rem, 10vw, 7rem);
   }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset-block-start: clamp(1rem, 4vw, 2.5rem);
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(420px, 82vw);
-    aspect-ratio: 1;
-    background: var(--iridescent);
-    filter: blur(80px);
-    opacity: 0.3;
-    border-radius: 50%;
-    pointer-events: none;
+  .hero-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
   }
 
-  .logo,
-  h1,
-  .title,
-  .positioning,
-  .actions,
-  .socials {
-    position: relative;
+  @media (min-width: 860px) {
+    .hero-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
   }
 
-  .logo {
-    width: 112px;
-    height: 112px;
-    border-radius: 26px;
-    object-fit: cover;
-    box-shadow: 0 12px 40px rgba(201, 184, 245, 0.25);
+  .kicker {
+    margin-block-end: 1.25rem;
   }
 
   h1 {
-    font-size: clamp(2.2rem, 6vw, 3.4rem);
-    margin-block: 1rem 0.5rem;
+    font-size: clamp(3rem, 9vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    margin: 0;
   }
 
   .title {
-    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
-    background: var(--iridescent);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin: 0 auto;
+    font-family: var(--font-display);
     font-weight: 600;
+    font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+    margin: 1.1rem 0 0;
+    max-width: 22ch;
   }
 
   .positioning {
-    color: var(--text-muted);
-    margin: 1.25rem auto 0;
-    max-width: 52ch;
+    color: var(--ink-muted);
+    margin: 1.25rem 0 0;
+    max-width: 46ch;
   }
 
   .actions {
     display: flex;
     gap: 0.75rem;
-    justify-content: center;
     flex-wrap: wrap;
     margin-block-start: 2rem;
-  }
-
-  .btn {
-    text-decoration: none;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 0.6rem 1.5rem;
-    font-weight: 500;
-  }
-
-  .btn:hover {
-    border-color: rgba(201, 184, 245, 0.5);
-  }
-
-  .btn.primary {
-    background: var(--iridescent);
-    color: #0b0b12;
-    border-color: transparent;
-    font-weight: 600;
   }
 
   .socials {
     display: flex;
     gap: 0.5rem;
-    justify-content: center;
     list-style: none;
     padding: 0;
     margin: 1.75rem 0 0;
@@ -148,14 +119,54 @@ const isExternal = (href: string) => href.startsWith('http')
     justify-content: center;
     width: 2.5rem;
     height: 2.5rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line-on-cream);
     border-radius: 50%;
-    color: var(--text-muted);
-    transition: color 160ms ease, border-color 160ms ease;
+    color: var(--ink-muted);
+    transition:
+      color 160ms ease,
+      border-color 160ms ease;
   }
 
   .socials a:hover {
-    color: var(--text);
-    border-color: rgba(201, 184, 245, 0.5);
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+
+  .hero-art {
+    aspect-ratio: 4 / 5;
+    max-width: 380px;
+    inline-size: 100%;
+    margin-inline: auto;
+    perspective: 900px;
+  }
+
+  .foil {
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    background:
+      conic-gradient(
+        from 210deg at 30% 30%,
+        #f25caf,
+        #8e63f0,
+        #3fd0d0,
+        #efce55,
+        #f25caf
+      );
+    box-shadow: 0 30px 70px rgba(23, 19, 32, 0.35);
+    transform: rotate(3deg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Oil-slick sheen: a soft light sweep over the conic gradient. */
+  .foil::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120% 80% at 20% 15%, rgba(255, 255, 255, 0.55), transparent 55%),
+      radial-gradient(90% 70% at 85% 90%, rgba(23, 19, 32, 0.35), transparent 60%);
+    mix-blend-mode: soft-light;
   }
 </style>

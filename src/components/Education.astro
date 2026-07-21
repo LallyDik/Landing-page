@@ -1,5 +1,6 @@
 ---
 import type { SiteContent } from '../data/content'
+import SectionHead from './SectionHead.astro'
 
 interface Props {
   content: SiteContent
@@ -8,30 +9,42 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<section id="education">
-  <h2 class="section-heading">{content.education.heading}</h2>
+<section id="education" class="band band--ink">
+  <div class="wrap">
+    <SectionHead num="05" title={content.education.heading} />
 
-  <p class="period">{content.education.period}</p>
-  <h3>{content.education.institution}</h3>
-  <p class="detail">{content.education.detail}</p>
+    <div class="entry">
+      <p class="period">{content.education.period}</p>
+      <h3>{content.education.institution}</h3>
+      <p class="detail">{content.education.detail}</p>
+    </div>
+  </div>
 </section>
 
 <style>
+  .entry {
+    border-inline-start: 2px solid var(--accent);
+    padding-inline-start: 1.25rem;
+    max-width: 60ch;
+  }
+
   .period {
     margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--cream-muted);
     letter-spacing: 0.04em;
   }
 
   h3 {
-    margin-block: 0.2rem 0.5rem;
-    font-size: 1.1rem;
+    margin-block: 0.35rem 0.6rem;
+    font-size: 1.2rem;
   }
 
   .detail {
     margin: 0;
-    color: var(--text-muted);
-    font-size: 0.95rem;
+    color: var(--cream-muted);
+    font-size: 0.94rem;
+    max-width: none;
   }
 </style>
