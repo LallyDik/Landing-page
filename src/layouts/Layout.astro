@@ -57,6 +57,18 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
 
         if (reduce) return
 
+        // Type the hero kicker out like a terminal (the caret keeps blinking).
+        var hk = document.querySelector('.hero .kicker')
+        if (hk) {
+          var full = hk.textContent
+          hk.textContent = ''
+          var ci = 0
+          ;(function type() {
+            hk.textContent = full.slice(0, ci++)
+            if (ci <= full.length) setTimeout(type, 45)
+          })()
+        }
+
         // Staggered scroll reveal. A manual position check on scroll is used
         // (not IntersectionObserver) so it fires reliably, and a safety net
         // reveals anything left after a few seconds — content is never stuck

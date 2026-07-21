@@ -1,0 +1,24 @@
+---
+// Decorative infinite ticker of the tech keywords. aria-hidden — the same
+// terms are already listed accessibly in the tech-stack section. The list is
+// doubled so the CSS translateX(-50%) loop is seamless.
+interface Props {
+  items: string[]
+}
+
+const { items } = Astro.props
+const loop = [...items, ...items]
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {
+      loop.map((item) => (
+        <span class="marquee__item">
+          {item}
+          <span class="marquee__dot">◆</span>
+        </span>
+      ))
+    }
+  </div>
+</div>

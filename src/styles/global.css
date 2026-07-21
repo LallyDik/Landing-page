@@ -338,6 +338,86 @@ a {
   }
 }
 
+/* Rotating holographic border on featured cards. @property lets the conic
+   angle animate; without it (older browsers) the border is simply static. */
+@property --a {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.capability.featured,
+.project-card.featured {
+  position: relative;
+}
+
+.capability.featured::after,
+.project-card.featured::after {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--a), #f25caf, #8e63f0, #3fd0d0, #efce55, #f25caf);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: border-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes border-spin {
+  to {
+    --a: 360deg;
+  }
+}
+
+/* Infinite holographic keyword ticker. */
+.marquee {
+  overflow: hidden;
+  background: var(--iridescent);
+  padding-block: 0.7rem;
+  direction: ltr;
+}
+
+.marquee__track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding-inline: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #171320;
+}
+
+.marquee__dot {
+  opacity: 0.6;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
