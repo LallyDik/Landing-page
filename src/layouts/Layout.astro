@@ -32,8 +32,130 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
     <PersonSchema content={content} />
   </head>
   <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="cursor-glow" aria-hidden="true"></div>
     <main>
       <slot />
     </main>
+
+    <script is:inline>
+      ;(function () {
+        var root = document.documentElement
+        root.classList.add('js')
+        var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+        var fine = matchMedia('(pointer: fine)').matches
+
+        // Scroll progress bar.
+        var bar = document.querySelector('.scroll-progress')
+        function onScroll() {
+          var max = root.scrollHeight - root.clientHeight
+          var p = max > 0 ? root.scrollTop / max : 0
+          if (bar) bar.style.transform = 'scaleX(' + p + ')'
+        }
+        addEventListener('scroll', onScroll, { passive: true })
+        onScroll()
+
+        if (reduce) return
+
+        // Staggered scroll reveal. A manual position check on scroll is used
+        // (not IntersectionObserver) so it fires reliably, and a safety net
+        // reveals anything left after a few seconds — content is never stuck
+        // hidden. Classes are removed once the animation ends so the element's
+        // transform is free again (e.g. for card tilt).
+        var targets = [].slice.call(
+          document.querySelectorAll(
+            '.band:not(.hero) .section-head, .band:not(.hero) .grid > *, .band:not(.hero) .entries > *, .band:not(.hero) .links > *, .band:not(.hero) .entry'
+          )
+        )
+        targets.forEach(function (el) {
+          el.classList.add('reveal')
+        })
+        function reveal(el) {
+          if (el.classList.contains('in')) return
+          var i = 0,
+            s = el
+          while ((s = s.previousElementSibling)) i++
+          el.style.animationDelay = Math.min(i, 6) * 65 + 'ms'
+          el.addEventListener(
+            'animationend',
+            function () {
+              el.classList.remove('reveal', 'in')
+              el.style.animationDelay = ''
+            },
+            { once: true }
+          )
+          el.classList.add('in')
+        }
+        function check() {
+          var vh = innerHeight
+          targets = targets.filter(function (el) {
+            var r = el.getBoundingClientRect()
+            if (r.top < vh * 0.9 && r.bottom > 0) {
+              reveal(el)
+              return false
+            }
+            return true
+          })
+        }
+        addEventListener('scroll', check, { passive: true })
+        addEventListener('resize', check, { passive: true })
+        check()
+        // Safety net: never leave anything hidden if scroll events go missing.
+        setTimeout(function () {
+          targets.forEach(reveal)
+          targets = []
+        }, 4000)
+
+        if (!fine) return
+
+        // Holographic glow trailing the cursor.
+        var glow = document.querySelector('.cursor-glow')
+        var gx = innerWidth / 2,
+          gy = innerHeight / 2,
+          tx = gx,
+          ty = gy
+        addEventListener('pointermove', function (e) {
+          tx = e.clientX
+          ty = e.clientY
+          if (glow) glow.style.opacity = '1'
+        })
+        ;(function loop() {
+          gx += (tx - gx) * 0.15
+          gy += (ty - gy) * 0.15
+          if (glow) glow.style.transform = 'translate(' + gx + 'px,' + gy + 'px) translate(-50%,-50%)'
+          requestAnimationFrame(loop)
+        })()
+
+        // 3D tilt on project cards.
+        document.querySelectorAll('.project-card').forEach(function (card) {
+          card.addEventListener('pointermove', function (e) {
+            var r = card.getBoundingClientRect()
+            var px = (e.clientX - r.left) / r.width - 0.5
+            var py = (e.clientY - r.top) / r.height - 0.5
+            card.style.transform =
+              'perspective(800px) rotateX(' + -py * 5 + 'deg) rotateY(' + px * 5 + 'deg) translateY(-4px)'
+          })
+          card.addEventListener('pointerleave', function () {
+            card.style.transform = ''
+          })
+        })
+
+        // Magnetic pull on the gradient buttons.
+        document.querySelectorAll('.btn--solid, .cv').forEach(function (btn) {
+          btn.addEventListener('pointermove', function (e) {
+            var r = btn.getBoundingClientRect()
+            btn.style.transform =
+              'translate(' +
+              (e.clientX - (r.left + r.width / 2)) * 0.25 +
+              'px,' +
+              (e.clientY - (r.top + r.height / 2)) * 0.4 +
+              'px)'
+          })
+          btn.addEventListener('pointerleave', function () {
+            btn.style.transform = ''
+          })
+        })
+      })()
+    </script>
   </body>
 </html>
