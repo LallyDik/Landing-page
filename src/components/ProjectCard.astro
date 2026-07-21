@@ -11,6 +11,8 @@ const { project, opensInNewTab, repoLabel } = Astro.props
 ---
 
 <article class="project-card card">
+  <img class="cover" src={project.image} alt="" width="760" height="460" loading="lazy" />
+
   <h3>{project.name}</h3>
   <p class="role">{project.role}</p>
   <p class="description">{project.description}</p>
@@ -41,11 +43,36 @@ const { project, opensInNewTab, repoLabel } = Astro.props
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .cover {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 76 / 46;
+    object-fit: cover;
+    object-position: top;
+    border-block-end: 1px solid var(--border);
   }
 
   h3 {
     margin: 0;
     font-size: 1.15rem;
+    padding-inline: 1.5rem;
+    padding-block-start: 0.4rem;
+  }
+
+  .role,
+  .description,
+  .tags,
+  .links {
+    padding-inline: 1.5rem;
+  }
+
+  .links {
+    padding-block-end: 1.5rem;
   }
 
   .role {

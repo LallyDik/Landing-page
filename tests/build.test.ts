@@ -187,6 +187,25 @@ describe('projects', () => {
     }
   })
 
+  it('gives every project card a cover image that ships in the build', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const cards = doc.querySelectorAll('.project-card')
+      expect(cards).toHaveLength(5)
+      for (const card of cards) {
+        const cover = card.querySelector('img.cover')
+        expect(cover).not.toBeNull()
+        const src = cover!.getAttribute('src') ?? ''
+        expect(src).toMatch(/^\/projects\/.+\.webp$/)
+        // The referenced file must actually exist in the build output, so a
+        // typo'd or renamed cover is a failed build rather than a live 404.
+        expect(existsSync(`dist${src}`)).toBe(true)
+        // Decorative: the card's h3 already names the project, so a screen
+        // reader must not hear the same thing twice.
+        expect(cover!.getAttribute('alt')).toBe('')
+      }
+    }
+  })
+
   it('hides the arrow glyph on project links from assistive technology', () => {
     for (const doc of [heDoc, enDoc]) {
       // This asserts per link, not per card, so the rental card's extra repo

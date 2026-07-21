@@ -82,6 +82,7 @@ export const he: SiteContent = {
         tech: ['React', 'TypeScript', 'Supabase'],
         url: 'https://nihul-schhirut.lovable.app/',
         repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
+        image: '/projects/nihul.webp',
       },
       {
         name: 'QSellerAI',
@@ -89,6 +90,7 @@ export const he: SiteContent = {
         role: 'AI Engineer · גרסה חדשה מלאה, שרתים ואוטומציות',
         tech: ['Bubble', 'n8n', 'Make', 'ניהול שרתים'],
         url: 'https://www.qsellerai.com/',
+        image: '/projects/qsellerai.webp',
       },
       {
         name: 'CBS — כמה זה עולה לי',
@@ -97,6 +99,7 @@ export const he: SiteContent = {
         role: 'פיתוח מלא מאפס · מטעם חברה',
         tech: ['Bubble'],
         url: 'https://www.cbs.co.il/step/%d7%9b%d7%9e%d7%94-%d7%96%d7%94-%d7%a2%d7%95%d7%9c%d7%94-%d7%9c%d7%99/',
+        image: '/projects/cbs.webp',
       },
       {
         name: 'WonderMe',
@@ -104,6 +107,7 @@ export const he: SiteContent = {
         role: 'פיתוח פיצ׳רים · Prompt Engineering',
         tech: ['Bubble', 'LLMs'],
         url: 'https://wonderme.ai/',
+        image: '/projects/wonderme.webp',
       },
       {
         name: 'Plenty.AI',
@@ -112,6 +116,7 @@ export const he: SiteContent = {
         role: 'פיתוח פיצ׳רים בקוד',
         tech: ['React', 'TypeScript', 'Supabase'],
         url: 'https://plentyai.co.il',
+        image: '/projects/plenty.webp',
       },
     ],
   },

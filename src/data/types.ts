@@ -25,6 +25,7 @@ export interface Project {
   tech: string[]
   url: string
   repoUrl?: string
+  image: string
 }
 
 export interface ExperienceEntry {

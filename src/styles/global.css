@@ -1,11 +1,11 @@
 @import '@fontsource-variable/heebo';
 
 :root {
-  --bg: #0b0b12;
-  --surface: #14141f;
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #ececf2;
-  --text-muted: #9a9aaf;
+  --bg: #14142a;
+  --surface: #1e1e3a;
+  --border: rgba(255, 255, 255, 0.11);
+  --text: #eef0f8;
+  --text-muted: #a6a6c4;
   --iridescent: linear-gradient(135deg, #f8b5e0, #c9b8f5, #a8f0e0, #faf3a0);
 
   --space-section: clamp(3.5rem, 8vw, 6rem);
@@ -26,6 +26,23 @@ body {
   font-family: 'Heebo Variable', system-ui, sans-serif;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient iridescent field behind everything — soft pastel glows over the
+   lifted indigo base, so the page reads as colourful rather than near-black.
+   Percentage positions (not left/right keywords) keep it direction-neutral
+   and clear of the RTL physical-property guard. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(58vw 58vw at 14% 10%, rgba(248, 181, 224, 0.16), transparent 62%),
+    radial-gradient(52vw 52vw at 88% 22%, rgba(168, 240, 224, 0.13), transparent 60%),
+    radial-gradient(60vw 60vw at 78% 94%, rgba(201, 184, 245, 0.16), transparent 62%),
+    radial-gradient(46vw 46vw at 8% 82%, rgba(250, 243, 160, 0.10), transparent 60%);
 }
 
 main {
