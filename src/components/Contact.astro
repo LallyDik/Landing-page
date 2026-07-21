@@ -90,6 +90,7 @@ const isExternal = (href: string) => href.startsWith('http')
     display: inline-block;
     text-decoration: none;
     background: var(--iridescent);
+    background-size: 220% 220%;
     color: #171320;
     font-weight: 600;
     border-radius: 999px;
@@ -99,5 +100,6 @@ const isExternal = (href: string) => href.startsWith('http')
 
   .cv:hover {
     transform: translateY(-2px);
+    animation: shimmer 1.4s ease infinite;
   }
 </style>

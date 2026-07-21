@@ -189,12 +189,23 @@ a {
 
 .btn--solid {
   background: var(--iridescent);
+  background-size: 220% 220%;
   color: #171320;
   border-color: transparent;
 }
 
 .btn--solid:hover {
   transform: translateY(-2px);
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 220% 50%;
+  }
 }
 
 .btn--ghost:hover {

@@ -144,22 +144,28 @@ const isExternal = (href: string) => href.startsWith('http')
     width: 100%;
     height: 100%;
     border-radius: 18px;
-    background:
-      conic-gradient(
-        from 210deg at 30% 30%,
-        #f25caf,
-        #8e63f0,
-        #3fd0d0,
-        #efce55,
-        #f25caf
-      );
     box-shadow: 0 30px 70px rgba(23, 19, 32, 0.35);
     transform: rotate(3deg);
     position: relative;
     overflow: hidden;
+    background: var(--ink);
   }
 
-  /* Oil-slick sheen: a soft light sweep over the conic gradient. */
+  /* The holographic colours live on an oversized layer that rotates slowly,
+     so the oil-slick sweeps around the panel — the signature moment. */
+  .foil::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    translate: -50% -50%;
+    background: conic-gradient(from 0deg, #f25caf, #8e63f0, #3fd0d0, #efce55, #f25caf);
+    animation: foil-spin 16s linear infinite;
+  }
+
+  /* Fixed sheen over the moving colour. */
   .foil::after {
     content: '';
     position: absolute;
@@ -168,5 +174,50 @@ const isExternal = (href: string) => href.startsWith('http')
       radial-gradient(120% 80% at 20% 15%, rgba(255, 255, 255, 0.55), transparent 55%),
       radial-gradient(90% 70% at 85% 90%, rgba(23, 19, 32, 0.35), transparent 60%);
     mix-blend-mode: soft-light;
+  }
+
+  @keyframes foil-spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  /* Load-in: the hero text rises in sequence, the panel eases in after. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-text > * {
+      animation: rise 0.7s both;
+    }
+    .kicker {
+      animation-delay: 0.05s;
+    }
+    h1 {
+      animation-delay: 0.13s;
+    }
+    .title {
+      animation-delay: 0.21s;
+    }
+    .positioning {
+      animation-delay: 0.29s;
+    }
+    .actions {
+      animation-delay: 0.37s;
+    }
+    .socials {
+      animation-delay: 0.45s;
+    }
+    .hero-art {
+      animation: rise 0.9s 0.25s both;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>
