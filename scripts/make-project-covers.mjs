@@ -1,68 +1,72 @@
-// Turn the raw 1295x879 site screenshots in public/projects/*.png into
-// consistent card cover images, then remove the raw PNGs.
+// Build the project card covers (760x460 WebP).
 //
-// Each cover is a top-aligned crop (so bottom-corner widgets — the Lovable
-// badge on nihul, accessibility/ESC buttons on the others — fall away) at a
-// fixed 76:46 ratio, exported as WebP for a small, in-budget file.
+// Four live sites were re-captured at 1280x800 with the scrollbar hidden
+// (public/projects/_src_*.png); each is top-cropped so bottom-corner widgets
+// and the scrollbar gutter fall away.
 //
-// wonderme is not screenshotted: NetFree blocks the live site, so the raw
-// capture was the filter's block page. It gets an iridescent gradient cover
-// with the project name instead, matching the design's fallback plan.
+// WonderMe cannot be captured cleanly: its live gallery is full of
+// NetFree-blocked tiles, repeated images and one sombre photo, and the app
+// needs a login agent-browser doesn't have. The owner supplied a screenshot;
+// only its top branded header (logo + tagline) is clean, so the cover is that
+// header contained on the banner's own background colour — no gallery.
 //
-// One-shot, like optimize-assets.mjs: it consumes public/projects/*.png and
-// writes public/projects/*.webp. Re-running after the PNGs are gone simply
-// regenerates the wonderme fallback and leaves the rest untouched.
+// One-shot: consumes the _src_ PNGs (+ a WonderMe source path via arg) and
+// writes the *.webp covers, then removes the sources.
 
 import sharp from 'sharp'
 import { readdirSync, existsSync, rmSync } from 'node:fs'
 
 const DIR = 'public/projects'
-const COVER_W = 760
-const COVER_H = 460
-// Crop this tall a band from the top of the 1295x879 source before scaling,
-// keeping the hero and clearing the bottom ~90px where the corner widgets sit.
-const CROP_H = Math.round((1295 * COVER_H) / COVER_W) // 784
+const W = 760
+const H = 460
 
-const shots = ['qsellerai', 'nihul', 'plenty', 'cbs']
+const sites = ['qsellerai', 'nihul', 'plenty', 'cbs']
 
-for (const name of shots) {
-  const src = `${DIR}/${name}.png`
+for (const name of sites) {
+  const src = `${DIR}/_src_${name}.png`
   if (!existsSync(src)) {
-    console.log(`skip ${name}: no source png`)
+    console.log(`skip ${name}: no source`)
     continue
   }
   const meta = await sharp(src).metadata()
-  const cropH = Math.min(CROP_H, meta.height)
+  // Top-crop to the cover ratio, staying clear of the bottom ~5% widgets.
+  const cropH = Math.min(Math.round((meta.width * H) / W), Math.round(meta.height * 0.95))
   await sharp(src)
     .extract({ left: 0, top: 0, width: meta.width, height: cropH })
-    .resize(COVER_W, COVER_H, { fit: 'cover', position: 'top' })
+    .resize(W, H, { fit: 'cover', position: 'top' })
     .webp({ quality: 80 })
     .toFile(`${DIR}/${name}.webp`)
   console.log(`cover ${name}.webp`)
 }
 
-// wonderme fallback: iridescent gradient with the wordmark, same dimensions.
-const fallback = `
-<svg xmlns="http://www.w3.org/2000/svg" width="${COVER_W}" height="${COVER_H}">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#F8B5E0"/>
-      <stop offset="0.35" stop-color="#C9B8F5"/>
-      <stop offset="0.7" stop-color="#A8F0E0"/>
-      <stop offset="1" stop-color="#FAF3A0"/>
-    </linearGradient>
-  </defs>
-  <rect width="${COVER_W}" height="${COVER_H}" fill="url(#g)"/>
-  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
-        font-family="Segoe UI, Arial, sans-serif" font-size="72" font-weight="700"
-        fill="#0B0B12" opacity="0.82">WonderMe</text>
-</svg>`
-await sharp(Buffer.from(fallback)).webp({ quality: 82 }).toFile(`${DIR}/wonderme.webp`)
-console.log('cover wonderme.webp (gradient fallback — NetFree blocked the live site)')
+// WonderMe: source path passed as the first CLI arg.
+const wmSrc = process.argv[2]
+if (wmSrc && existsSync(wmSrc)) {
+  const meta = await sharp(wmSrc).metadata()
+  const bandW = Math.round(meta.width * 0.615) // exclude the chat panel on the right
+  const bandH = Math.round(meta.height * 0.2) // the header band only
+  // Sample the banner background colour from a top-left pixel.
+  const { data } = await sharp(wmSrc)
+    .extract({ left: 8, top: 8, width: 1, height: 1 })
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+  const bg = { r: data[0], g: data[1], b: data[2] }
 
-// Remove the raw PNGs so only the covers ship.
+  const header = await sharp(wmSrc)
+    .extract({ left: 0, top: 0, width: bandW, height: bandH })
+    .toBuffer()
+  await sharp({
+    create: { width: W, height: H, channels: 3, background: bg },
+  })
+    .composite([{ input: await sharp(header).resize({ width: Math.round(W * 0.92) }).toBuffer(), gravity: 'center' }])
+    .webp({ quality: 82 })
+    .toFile(`${DIR}/wonderme.webp`)
+  console.log('cover wonderme.webp (branded header, gallery excluded)')
+}
+
+// Clean up sources.
 for (const f of readdirSync(DIR)) {
-  if (f.endsWith('.png')) {
+  if (f.startsWith('_src_') && f.endsWith('.png')) {
     rmSync(`${DIR}/${f}`)
     console.log(`removed ${f}`)
   }
