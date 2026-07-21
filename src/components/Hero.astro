@@ -1,18 +1,20 @@
 ---
 import type { SiteContent } from '../data/content'
 import LangToggle from './LangToggle.astro'
+import { contactIcons } from '../data/icons'
 
 interface Props {
   content: SiteContent
 }
 
 const { content } = Astro.props
+const isExternal = (href: string) => href.startsWith('http')
 ---
 
 <header class="hero">
   <LangToggle toggle={content.langToggle} />
 
-  <img class="logo" src="/logo-ld.png" alt="" width="96" height="96" />
+  <img class="logo" src="/logo-ld.png" alt="" width="112" height="112" />
 
   <h1>{content.hero.name}</h1>
   <p class="title">{content.hero.title}</p>
@@ -22,26 +24,46 @@ const { content } = Astro.props
     <a class="btn primary" href="#projects">{content.hero.ctaProjects}</a>
     <a class="btn" href="#contact">{content.hero.ctaContact}</a>
   </div>
+
+  <ul class="socials">
+    {
+      content.contact.links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            aria-label={
+              isExternal(link.href) ? `${link.label} (${content.opensInNewTab})` : link.label
+            }
+            target={isExternal(link.href) ? '_blank' : undefined}
+            rel={isExternal(link.href) ? 'noopener noreferrer' : undefined}
+          >
+            <span aria-hidden="true" set:html={contactIcons[link.kind]} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
 </header>
 
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(4rem, 12vw, 7rem) var(--space-section);
+    padding-block: clamp(3.5rem, 10vw, 6rem) clamp(2.5rem, 6vw, 4rem);
+    padding-inline: 1.25rem;
     text-align: center;
   }
 
   .hero::before {
     content: '';
     position: absolute;
-    inset-block-start: 2rem;
+    inset-block-start: clamp(1rem, 4vw, 2.5rem);
     left: 50%;
     transform: translateX(-50%);
-    width: min(460px, 80vw);
+    width: min(420px, 82vw);
     aspect-ratio: 1;
     background: var(--iridescent);
-    filter: blur(90px);
-    opacity: 0.22;
+    filter: blur(80px);
+    opacity: 0.3;
     border-radius: 50%;
     pointer-events: none;
   }
@@ -50,15 +72,17 @@ const { content } = Astro.props
   h1,
   .title,
   .positioning,
-  .actions {
+  .actions,
+  .socials {
     position: relative;
   }
 
   .logo {
-    width: 96px;
-    height: 96px;
-    border-radius: 22px;
+    width: 112px;
+    height: 112px;
+    border-radius: 26px;
     object-fit: cover;
+    box-shadow: 0 12px 40px rgba(201, 184, 245, 0.25);
   }
 
   h1 {
@@ -107,5 +131,31 @@ const { content } = Astro.props
     color: #0b0b12;
     border-color: transparent;
     font-weight: 600;
+  }
+
+  .socials {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 1.75rem 0 0;
+  }
+
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-muted);
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  .socials a:hover {
+    color: var(--text);
+    border-color: rgba(201, 184, 245, 0.5);
   }
 </style>

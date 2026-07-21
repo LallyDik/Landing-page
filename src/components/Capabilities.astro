@@ -17,12 +17,14 @@ const { content } = Astro.props
         <article class:list={['capability', 'card', item.kind]}>
           <h3>{item.title}</h3>
 
+          {item.kind === 'compact' && <p class="lead">{item.lead}</p>}
+
           {item.kind === 'featured' && (
-            <dl class="claims">
-              {item.claims.map((c) => (
-                <div class="claim-row">
-                  <dt class="claim">{c.claim}</dt>
-                  <dd class="evidence">{c.evidence}</dd>
+            <dl class="areas">
+              {item.areas.map((a) => (
+                <div class="area-row">
+                  <dt class="area">{a.area}</dt>
+                  <dd class="detail">{a.detail}</dd>
                 </div>
               ))}
             </dl>
@@ -61,29 +63,40 @@ const { content } = Astro.props
     font-size: 1.2rem;
   }
 
-  .claims {
+  .compact h3 {
+    margin-block-end: 0.4rem;
+  }
+
+  .lead {
+    margin: 0 0 1rem;
+    color: var(--text-muted);
+    font-size: 0.94rem;
+    max-width: none;
+  }
+
+  .areas {
     margin: 0 0 1.25rem;
     display: grid;
     gap: 1rem;
   }
 
   @media (min-width: 640px) {
-    .claims {
+    .areas {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  .claim-row {
+  .area-row {
     border-inline-start: 2px solid rgba(201, 184, 245, 0.45);
     padding-inline-start: 0.9rem;
   }
 
-  .claim {
+  .area {
     font-weight: 600;
     margin-block-end: 0.25rem;
   }
 
-  .evidence {
+  .detail {
     margin: 0;
     color: var(--text-muted);
     font-size: 0.94rem;

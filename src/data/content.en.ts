@@ -23,26 +23,26 @@ export const en: SiteContent = {
       {
         kind: 'featured',
         title: 'Engineering in code',
-        claims: [
+        areas: [
           {
-            claim: 'Server-side built from scratch',
-            evidence:
-              'The Israeli e-Invoicing module at Easy Tax — C#, ASP.NET Core 8, EF Core and SQL Server, following Clean Architecture. A regulated Tax Authority domain.',
+            area: 'Clean code & architecture',
+            detail:
+              'Readable, maintainable code on Clean Architecture principles — layered separation, clear responsibilities and a structure that stays easy to extend.',
           },
           {
-            claim: 'A full product, fully owned',
-            evidence:
-              'The rental management system — React and TypeScript against Supabase, including Google and email auth and a tenant, unit and payment data model.',
+            area: 'End-to-end full stack',
+            detail:
+              'Whole systems from server to interface — C# and ASP.NET Core, Node.js, React and TypeScript, tied together with REST APIs.',
           },
           {
-            claim: 'Non-trivial business logic',
-            evidence:
-              'Electricity, water and gas billing from meter readings, with lease and payment tracking across both the Hebrew and Gregorian calendars.',
+            area: 'AI woven into systems',
+            detail:
+              'LLMs, agents and RAG embedded as a reliable, structured part of the product — integrated into the flow, not bolted on.',
           },
           {
-            claim: 'Working inside an existing codebase',
-            evidence:
-              'Feature development at Plenty.AI inside an established React, TypeScript and Supabase codebase — not only greenfield work.',
+            area: 'Data & reliability',
+            detail:
+              'Schema design across SQL Server, PostgreSQL/Supabase and MongoDB with EF Core, built for performance and production reliability.',
           },
         ],
         tags: [
@@ -61,11 +61,13 @@ export const en: SiteContent = {
       {
         kind: 'compact',
         title: 'AI systems',
+        lead: 'AI capabilities embedded in real products — from use case to reliable output.',
         tags: ['LLMs', 'RAG', 'AI Agents', 'Prompt Engineering', 'Structured Outputs'],
       },
       {
         kind: 'compact',
         title: 'Automation & integrations',
+        lead: 'Connecting systems and automating workflows across tools and data sources.',
         tags: ['n8n', 'Make', 'Bubble', 'Webhooks', 'API integrations'],
       },
     ],

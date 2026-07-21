@@ -1,18 +1,19 @@
-export interface EvidenceClaim {
-  claim: string
-  evidence: string
+export interface CapabilityArea {
+  area: string
+  detail: string
 }
 
 export interface FeaturedCapability {
   kind: 'featured'
   title: string
-  claims: EvidenceClaim[]
+  areas: CapabilityArea[]
   tags: string[]
 }
 
 export interface CompactCapability {
   kind: 'compact'
   title: string
+  lead: string
   tags: string[]
 }
 

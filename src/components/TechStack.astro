@@ -30,15 +30,25 @@ const { content } = Astro.props
 <style>
   .grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.5rem 2rem;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .tech-group {
+    text-align: start;
+    border-inline-start: 2px solid rgba(201, 184, 245, 0.45);
+    padding-inline-start: 1rem;
   }
 
   h3 {
     margin-block: 0 0.6rem;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--text-muted);
+    color: #c9b8f5;
+  }
+
+  .tags {
+    justify-content: flex-start;
   }
 </style>

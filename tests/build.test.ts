@@ -126,11 +126,11 @@ describe('capabilities', () => {
     }
   })
 
-  it('states four claim-evidence pairs in the featured card', () => {
+  it('details four capability areas in the featured card', () => {
     for (const doc of [heDoc, enDoc]) {
       const featured = doc.querySelector('.capability.featured')
-      expect(featured?.querySelectorAll('.claim')).toHaveLength(4)
-      expect(featured?.querySelectorAll('.evidence')).toHaveLength(4)
+      expect(featured?.querySelectorAll('.area')).toHaveLength(4)
+      expect(featured?.querySelectorAll('.detail')).toHaveLength(4)
     }
   })
 

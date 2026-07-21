@@ -23,26 +23,26 @@ export const he: SiteContent = {
       {
         kind: 'featured',
         title: 'פיתוח בקוד',
-        claims: [
+        areas: [
           {
-            claim: 'בניית צד שרת מאפס',
-            evidence:
-              'מודול "חשבוניות ישראל" ב‑Easy Tax — C#, ASP.NET Core 8, EF Core ו‑SQL Server לפי עקרונות Clean Architecture. דומיין מוסדר מול רשות המסים.',
+            area: 'קוד נקי וארכיטקטורה',
+            detail:
+              'כתיבת קוד קריא ומתוחזק לפי עקרונות Clean Architecture — הפרדת שכבות, אחריות ברורה ומבנה שנשאר קל להרחבה ולתחזוקה.',
           },
           {
-            claim: 'מוצר שלם בבעלות מלאה',
-            evidence:
-              'מערכת ניהול השכירות — React ו‑TypeScript מול Supabase, כולל אימות Google ומייל ומודל נתונים של שוכרים, יחידות ותשלומים.',
+            area: 'פיתוח Full Stack מקצה לקצה',
+            detail:
+              'בניית מערכות שלמות מהשרת ועד הממשק — C# ו‑ASP.NET Core, Node.js, React ו‑TypeScript, המחוברים ב‑REST APIs.',
           },
           {
-            claim: 'לוגיקה עסקית לא טריוויאלית',
-            evidence:
-              'חיוב חשמל, מים וגז לפי קריאות מונה, ומעקב חוזים ותשלומים על לוח עברי ולועזי במקביל.',
+            area: 'שילוב יכולות AI במערכות',
+            detail:
+              'הטמעת LLMs, סוכנים ו‑RAG כחלק אמין ומובנה מהמוצר — יכולת שמשולבת בתוך הזרימה, לא הדבקה חיצונית.',
           },
           {
-            claim: 'עבודה בתוך בסיס קוד קיים',
-            evidence:
-              'פיתוח פיצ׳רים ב‑Plenty.AI בתוך React, TypeScript ו‑Supabase קיימים — לא רק בנייה על מגרש ריק.',
+            area: 'מסדי נתונים ואמינות',
+            detail:
+              'תכנון סכימות ב‑SQL Server, PostgreSQL/Supabase ו‑MongoDB עם EF Core, ובנייה לביצועים ולאמינות בסביבת Production.',
           },
         ],
         tags: [
@@ -61,11 +61,13 @@ export const he: SiteContent = {
       {
         kind: 'compact',
         title: 'מערכות AI',
+        lead: 'הטמעת יכולות AI במוצרים אמיתיים — מהגדרת התרחיש ועד פלט אמין.',
         tags: ['LLMs', 'RAG', 'AI Agents', 'Prompt Engineering', 'Structured Outputs'],
       },
       {
         kind: 'compact',
         title: 'אוטומציה ואינטגרציות',
+        lead: 'חיבור מערכות ותהליכים אוטומטיים בין כלים ומקורות מידע.',
         tags: ['n8n', 'Make', 'Bubble', 'Webhooks', 'אינטגרציות API'],
       },
     ],

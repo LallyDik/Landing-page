@@ -14,11 +14,12 @@ const { content } = Astro.props
 
   <div class="grid">
     {
-      content.projects.items.map((project) => (
+      content.projects.items.map((project, i) => (
         <ProjectCard
           project={project}
           opensInNewTab={content.opensInNewTab}
           repoLabel={content.projects.repoLabel}
+          featured={i === 0}
         />
       ))
     }
@@ -29,6 +30,18 @@ const { content } = Astro.props
   .grid {
     display: grid;
     gap: 1.25rem;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
+  }
+
+  /* The lead project spans the full width as a featured card; the other four
+     fall into a 2x2 grid beneath it, so no cell is ever left empty. */
+  @media (min-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid > :global(.project-card.featured) {
+      grid-column: 1 / -1;
+    }
   }
 </style>

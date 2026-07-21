@@ -5,6 +5,8 @@ interface Props {
   content: SiteContent
 }
 
+import { contactIcons } from '../data/icons'
+
 const { content } = Astro.props
 
 const isExternal = (href: string) => href.startsWith('http')
@@ -23,7 +25,8 @@ const isExternal = (href: string) => href.startsWith('http')
             target={isExternal(link.href) ? '_blank' : undefined}
             rel={isExternal(link.href) ? 'noopener noreferrer' : undefined}
           >
-            {link.label}
+            <span class="icon" aria-hidden="true" set:html={contactIcons[link.kind]} />
+            <span class="label">{link.label}</span>
             {isExternal(link.href) && (
               <span class="visually-hidden">({content.opensInNewTab})</span>
             )}
@@ -49,12 +52,24 @@ const isExternal = (href: string) => href.startsWith('http')
   }
 
   .links a {
-    display: block;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
     text-decoration: none;
     padding: 1rem;
     font-weight: 500;
     word-break: break-word;
+  }
+
+  .icon {
+    display: inline-flex;
+    color: #c9b8f5;
+    flex-shrink: 0;
+  }
+
+  .links a:hover .icon {
+    color: var(--text);
   }
 
   .cv {

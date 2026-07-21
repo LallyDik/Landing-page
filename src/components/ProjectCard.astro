@@ -5,36 +5,39 @@ interface Props {
   project: Project
   opensInNewTab: string
   repoLabel: string
+  featured?: boolean
 }
 
-const { project, opensInNewTab, repoLabel } = Astro.props
+const { project, opensInNewTab, repoLabel, featured = false } = Astro.props
 ---
 
-<article class="project-card card">
+<article class:list={['project-card', 'card', { featured }]}>
   <img class="cover" src={project.image} alt="" width="760" height="460" loading="lazy" />
 
-  <h3>{project.name}</h3>
-  <p class="role">{project.role}</p>
-  <p class="description">{project.description}</p>
+  <div class="body">
+    <h3>{project.name}</h3>
+    <p class="role">{project.role}</p>
+    <p class="description">{project.description}</p>
 
-  <ul class="tags">
-    {project.tech.map((tech) => <li class="tag">{tech}</li>)}
-  </ul>
+    <ul class="tags">
+      {project.tech.map((tech) => <li class="tag">{tech}</li>)}
+    </ul>
 
-  <div class="links">
-    <a href={project.url} target="_blank" rel="noopener noreferrer">
-      {project.name} <span aria-hidden="true">↗</span>
-      <span class="visually-hidden">({opensInNewTab})</span>
-    </a>
+    <div class="links">
+      <a href={project.url} target="_blank" rel="noopener noreferrer">
+        {project.name} <span aria-hidden="true">↗</span>
+        <span class="visually-hidden">({opensInNewTab})</span>
+      </a>
 
-    {
-      project.repoUrl && (
-        <a class="repo-link" href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-          {repoLabel} <span aria-hidden="true">↗</span>
-          <span class="visually-hidden">({opensInNewTab})</span>
-        </a>
-      )
-    }
+      {
+        project.repoUrl && (
+          <a class="repo-link" href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+            {repoLabel} <span aria-hidden="true">↗</span>
+            <span class="visually-hidden">({opensInNewTab})</span>
+          </a>
+        )
+      }
+    </div>
   </div>
 </article>
 
@@ -42,7 +45,6 @@ const { project, opensInNewTab, repoLabel } = Astro.props
   .project-card {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
     padding: 0;
     overflow: hidden;
   }
@@ -57,22 +59,17 @@ const { project, opensInNewTab, repoLabel } = Astro.props
     border-block-end: 1px solid var(--border);
   }
 
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.5rem;
+    flex-grow: 1;
+  }
+
   h3 {
     margin: 0;
     font-size: 1.15rem;
-    padding-inline: 1.5rem;
-    padding-block-start: 0.4rem;
-  }
-
-  .role,
-  .description,
-  .tags,
-  .links {
-    padding-inline: 1.5rem;
-  }
-
-  .links {
-    padding-block-end: 1.5rem;
   }
 
   .role {
@@ -118,5 +115,31 @@ const { project, opensInNewTab, repoLabel } = Astro.props
 
   .repo-link:hover {
     color: var(--text);
+  }
+
+  /* Wide featured card: the lead project runs full width with the cover
+     beside the text instead of above it, using the extra width. */
+  @media (min-width: 700px) {
+    .project-card.featured {
+      flex-direction: row;
+    }
+
+    .project-card.featured .cover {
+      width: 54%;
+      height: auto;
+      aspect-ratio: auto;
+      align-self: stretch;
+      border-block-end: none;
+      border-inline-end: 1px solid var(--border);
+    }
+
+    .project-card.featured .body {
+      width: 46%;
+      justify-content: center;
+    }
+
+    .project-card.featured h3 {
+      font-size: 1.4rem;
+    }
   }
 </style>
