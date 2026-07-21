@@ -171,11 +171,11 @@ export const en: SiteContent = {
     ],
   },
   education: {
-    heading: 'Education',
-    period: '2023 – 2024',
-    institution: 'Software Engineering · Beit Yaakov Institute',
+    heading: 'Certification',
+    period: 'MAHAT · 2025',
+    institution: 'Certified Practical Engineer · Software Engineering · with Distinction',
     detail:
-      'Practical Engineer diploma (MAHAT), extended track focused on artificial intelligence and software architecture.',
+      'Practical Engineer diploma from MAHAT — Israel’s Government Institute for Technological Training, Beit Yaakov College, software engineering track.',
   },
   contact: {
     heading: 'Get in touch',
