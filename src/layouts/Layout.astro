@@ -34,6 +34,7 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="cursor-glow" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
     <main>
       <slot />
     </main>
@@ -138,6 +139,15 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
           requestAnimationFrame(loop)
         })()
 
+        // Spotlight following the cursor inside every card.
+        document.querySelectorAll('.capability, .project-card').forEach(function (card) {
+          card.addEventListener('pointermove', function (e) {
+            var r = card.getBoundingClientRect()
+            card.style.setProperty('--mx', e.clientX - r.left + 'px')
+            card.style.setProperty('--my', e.clientY - r.top + 'px')
+          })
+        })
+
         // 3D tilt on project cards.
         document.querySelectorAll('.project-card').forEach(function (card) {
           card.addEventListener('pointermove', function (e) {
@@ -151,6 +161,53 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
             card.style.transform = ''
           })
         })
+
+        // Custom cursor ring: lerp-follows, grows over interactive elements.
+        var ring = document.querySelector('.cursor-ring')
+        var rx = innerWidth / 2,
+          ry = innerHeight / 2
+        addEventListener('pointermove', function (e) {
+          if (ring) ring.style.opacity = '1'
+        })
+        ;(function ringLoop() {
+          rx += (tx - rx) * 0.2
+          ry += (ty - ry) * 0.2
+          if (ring) ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)'
+          requestAnimationFrame(ringLoop)
+        })()
+        document.querySelectorAll('a, button, .card, .btn').forEach(function (el) {
+          el.addEventListener('pointerenter', function () {
+            if (ring) ring.classList.add('big')
+          })
+          el.addEventListener('pointerleave', function () {
+            if (ring) ring.classList.remove('big')
+          })
+        })
+
+        // Holographic confetti when the CV is downloaded.
+        var cv = document.querySelector('.cv')
+        if (cv)
+          cv.addEventListener('click', function () {
+            var colors = ['#f25caf', '#8e63f0', '#3fd0d0', '#efce55']
+            var r = cv.getBoundingClientRect()
+            for (var k = 0; k < 18; k++) {
+              var p = document.createElement('div')
+              p.className = 'confetti'
+              p.style.left = r.left + r.width / 2 + 'px'
+              p.style.top = r.top + 'px'
+              p.style.background = colors[k % 4]
+              var ang = Math.random() * Math.PI
+              var dist = 70 + Math.random() * 140
+              p.style.setProperty('--dx', -Math.cos(ang) * dist + 'px')
+              p.style.setProperty('--dy', -Math.abs(Math.sin(ang)) * dist - 30 + 'px')
+              document.body.appendChild(p)
+              ;(function (el) {
+                setTimeout(function () {
+                  el.remove()
+                }, 950)
+              })(p)
+            }
+          })
 
         // Magnetic pull on the gradient buttons.
         document.querySelectorAll('.btn--solid, .cv').forEach(function (btn) {

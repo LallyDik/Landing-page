@@ -355,7 +355,7 @@ a {
 .project-card.featured::after {
   content: '';
   position: absolute;
-  inset: -1.5px;
+  inset: 0;
   border-radius: inherit;
   padding: 1.5px;
   background: conic-gradient(from var(--a), #f25caf, #8e63f0, #3fd0d0, #efce55, #f25caf);
@@ -381,13 +381,16 @@ a {
 .marquee {
   overflow: hidden;
   background: var(--iridescent);
-  padding-block: 0.7rem;
+  padding-block: 0.6rem;
   direction: ltr;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .marquee__track {
-  display: inline-flex;
-  white-space: nowrap;
+  display: flex;
+  width: max-content;
   animation: marquee 30s linear infinite;
 }
 
@@ -416,6 +419,80 @@ a {
 
 .marquee:hover .marquee__track {
   animation-play-state: paused;
+}
+
+.marquee__track--rev {
+  animation-direction: reverse;
+}
+
+/* Spotlight that follows the cursor inside each card (JS sets --mx/--my). */
+.capability,
+.project-card {
+  position: relative;
+  --mx: 50%;
+  --my: 50%;
+}
+
+.capability::before,
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(220px circle at var(--mx) var(--my), rgba(142, 99, 240, 0.18), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.capability:hover::before,
+.project-card:hover::before {
+  opacity: 1;
+}
+
+/* Custom cursor ring (JS positions it; grows over interactive elements). */
+.cursor-ring {
+  position: fixed;
+  direction: ltr;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid rgba(142, 99, 240, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2147483002;
+  opacity: 0;
+  translate: -50% -50%;
+  transition:
+    opacity 0.3s ease,
+    width 0.2s ease,
+    height 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.cursor-ring.big {
+  width: 58px;
+  height: 58px;
+  border-color: rgba(63, 208, 208, 0.9);
+}
+
+/* Holographic confetti burst on CV download. */
+.confetti {
+  position: fixed;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 2147483003;
+  animation: confetti-fly 0.9s ease-out forwards;
+}
+
+@keyframes confetti-fly {
+  to {
+    transform: translate(var(--dx), var(--dy)) rotate(400deg);
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

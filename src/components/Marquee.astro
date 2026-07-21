@@ -21,4 +21,14 @@ const loop = [...items, ...items]
       ))
     }
   </div>
+  <div class="marquee__track marquee__track--rev">
+    {
+      loop.map((item) => (
+        <span class="marquee__item">
+          {item}
+          <span class="marquee__dot">◆</span>
+        </span>
+      ))
+    }
+  </div>
 </div>
