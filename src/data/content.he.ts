@@ -82,7 +82,7 @@ export const he: SiteContent = {
           'ניהול שוכרים, יחידות ותשלומים — שכר דירה, חשמל, מים וגז לפי קריאת מונה, על לוח עברי ולועזי.',
         role: 'מוצר עצמאי · פיתוח מלא בקוד',
         tech: ['React', 'TypeScript', 'Supabase'],
-        url: 'https://nihul-schhirut.lovable.app/',
+        url: 'https://nihulschirut.com',
         repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
         image: '/projects/nihul.webp',
       },
@@ -97,7 +97,7 @@ export const he: SiteContent = {
       {
         name: 'CBS — כמה זה עולה לי',
         description:
-          'עמוד נחיתה ומחשבון עלות שנתית לבעלי עסקים, עבור מבקר שכר מוסמך.',
+          'מחשבון עלות שכר שנתית לבעלי עסקים — כמה באמת עולה עובד — שבניתי עבור מבקר שכר מוסמך.',
         role: 'פיתוח מלא מאפס · מטעם חברה',
         tech: ['Bubble'],
         url: 'https://www.cbs.co.il/step/%d7%9b%d7%9e%d7%94-%d7%96%d7%94-%d7%a2%d7%95%d7%9c%d7%94-%d7%9c%d7%99/',

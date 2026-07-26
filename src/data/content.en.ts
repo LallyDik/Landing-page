@@ -82,7 +82,7 @@ export const en: SiteContent = {
           'Tenants, units and payments — rent, electricity, water and gas from meter readings, across the Hebrew and Gregorian calendars.',
         role: 'Independent product · built end to end in code',
         tech: ['React', 'TypeScript', 'Supabase'],
-        url: 'https://nihul-schhirut.lovable.app/',
+        url: 'https://nihulschirut.com',
         repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
         image: '/projects/nihul.webp',
       },
@@ -97,7 +97,7 @@ export const en: SiteContent = {
       {
         name: 'CBS — What It Really Costs Me',
         description:
-          'A landing page and annual cost calculator for business owners, built for a certified payroll auditor.',
+          'An annual payroll-cost calculator for business owners — what an employee truly costs — that I built for a certified payroll auditor.',
         role: 'Built from scratch · on behalf of a company',
         tech: ['Bubble'],
         url: 'https://www.cbs.co.il/step/%d7%9b%d7%9e%d7%94-%d7%96%d7%94-%d7%a2%d7%95%d7%9c%d7%94-%d7%9c%d7%99/',

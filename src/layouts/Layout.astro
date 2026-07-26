@@ -33,8 +33,6 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
-    <div class="cursor-glow" aria-hidden="true"></div>
-    <div class="cursor-ring" aria-hidden="true"></div>
     <main>
       <slot />
     </main>
@@ -121,24 +119,6 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
 
         if (!fine) return
 
-        // Holographic glow trailing the cursor.
-        var glow = document.querySelector('.cursor-glow')
-        var gx = innerWidth / 2,
-          gy = innerHeight / 2,
-          tx = gx,
-          ty = gy
-        addEventListener('pointermove', function (e) {
-          tx = e.clientX
-          ty = e.clientY
-          if (glow) glow.style.opacity = '1'
-        })
-        ;(function loop() {
-          gx += (tx - gx) * 0.15
-          gy += (ty - gy) * 0.15
-          if (glow) glow.style.transform = 'translate(' + gx + 'px,' + gy + 'px) translate(-50%,-50%)'
-          requestAnimationFrame(loop)
-        })()
-
         // Spotlight following the cursor inside every card.
         document.querySelectorAll('.capability, .project-card').forEach(function (card) {
           card.addEventListener('pointermove', function (e) {
@@ -155,32 +135,10 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
             var px = (e.clientX - r.left) / r.width - 0.5
             var py = (e.clientY - r.top) / r.height - 0.5
             card.style.transform =
-              'perspective(800px) rotateX(' + -py * 5 + 'deg) rotateY(' + px * 5 + 'deg) translateY(-4px)'
+              'perspective(900px) rotateX(' + -py * 3 + 'deg) rotateY(' + px * 3 + 'deg) translateY(-3px)'
           })
           card.addEventListener('pointerleave', function () {
             card.style.transform = ''
-          })
-        })
-
-        // Custom cursor ring: lerp-follows, grows over interactive elements.
-        var ring = document.querySelector('.cursor-ring')
-        var rx = innerWidth / 2,
-          ry = innerHeight / 2
-        addEventListener('pointermove', function (e) {
-          if (ring) ring.style.opacity = '1'
-        })
-        ;(function ringLoop() {
-          rx += (tx - rx) * 0.2
-          ry += (ty - ry) * 0.2
-          if (ring) ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)'
-          requestAnimationFrame(ringLoop)
-        })()
-        document.querySelectorAll('a, button, .card, .btn').forEach(function (el) {
-          el.addEventListener('pointerenter', function () {
-            if (ring) ring.classList.add('big')
-          })
-          el.addEventListener('pointerleave', function () {
-            if (ring) ring.classList.remove('big')
           })
         })
 

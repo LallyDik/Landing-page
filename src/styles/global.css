@@ -267,29 +267,6 @@ a {
   pointer-events: none;
 }
 
-/* Holographic glow that trails the cursor (positioned by JS via transform). */
-.cursor-glow {
-  position: fixed;
-  direction: ltr;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  width: 460px;
-  height: 460px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2147483000;
-  opacity: 0;
-  background: radial-gradient(
-    circle,
-    rgba(142, 99, 240, 0.3),
-    rgba(63, 208, 208, 0.14) 45%,
-    transparent 70%
-  );
-  filter: blur(26px);
-  mix-blend-mode: screen;
-  transition: opacity 0.5s ease;
-}
-
 /* Blinking terminal caret after every mono kicker — the code motif. */
 .kicker::after {
   content: '_';
@@ -338,14 +315,7 @@ a {
   }
 }
 
-/* Rotating holographic border on featured cards. @property lets the conic
-   angle animate; without it (older browsers) the border is simply static. */
-@property --a {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
+/* Static holographic gradient border on featured cards. */
 .capability.featured,
 .project-card.featured {
   position: relative;
@@ -358,7 +328,7 @@ a {
   inset: 0;
   border-radius: inherit;
   padding: 1.5px;
-  background: conic-gradient(from var(--a), #f25caf, #8e63f0, #3fd0d0, #efce55, #f25caf);
+  background: conic-gradient(from 210deg, #f25caf, #8e63f0, #3fd0d0, #efce55, #f25caf);
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -367,14 +337,7 @@ a {
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
-  animation: border-spin 6s linear infinite;
   pointer-events: none;
-}
-
-@keyframes border-spin {
-  to {
-    --a: 360deg;
-  }
 }
 
 /* Infinite holographic keyword ticker. */
@@ -448,33 +411,6 @@ a {
 .capability:hover::before,
 .project-card:hover::before {
   opacity: 1;
-}
-
-/* Custom cursor ring (JS positions it; grows over interactive elements). */
-.cursor-ring {
-  position: fixed;
-  direction: ltr;
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  width: 34px;
-  height: 34px;
-  border: 1.5px solid rgba(142, 99, 240, 0.8);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2147483002;
-  opacity: 0;
-  translate: -50% -50%;
-  transition:
-    opacity 0.3s ease,
-    width 0.2s ease,
-    height 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.cursor-ring.big {
-  width: 58px;
-  height: 58px;
-  border-color: rgba(63, 208, 208, 0.9);
 }
 
 /* Holographic confetti burst on CV download. */
