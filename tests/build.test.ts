@@ -314,9 +314,15 @@ describe('contact', () => {
       const contact = doc.querySelector('#contact')
       expect(contact).not.toBeNull()
       expect(contact?.querySelector('a[href^="mailto:"]')).not.toBeNull()
-      expect(contact?.querySelector('a[href*="wa.me"]')).not.toBeNull()
+      expect(contact?.querySelector('a[href^="tel:"]')).not.toBeNull()
       expect(contact?.querySelector('a[href*="github.com"]')).not.toBeNull()
       expect(contact?.querySelector('a[href*="duallin.com"]')).not.toBeNull()
+    }
+  })
+
+  it('no longer exposes a WhatsApp channel', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelector('a[href*="wa.me"]')).toBeNull()
     }
   })
 

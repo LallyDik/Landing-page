@@ -42,7 +42,7 @@ export interface TechGroup {
 }
 
 export interface ContactLink {
-  kind: 'email' | 'whatsapp' | 'github' | 'duallin'
+  kind: 'email' | 'phone' | 'github' | 'duallin'
   label: string
   href: string
 }

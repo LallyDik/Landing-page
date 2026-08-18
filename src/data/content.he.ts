@@ -181,7 +181,7 @@ export const he: SiteContent = {
     heading: 'צרו קשר',
     links: [
       { kind: 'email', label: 'ld3250803@gmail.com', href: 'mailto:ld3250803@gmail.com' },
-      { kind: 'whatsapp', label: '058-3250803', href: 'https://wa.me/972583250803' },
+      { kind: 'phone', label: '058-3250803', href: 'tel:+972583250803' },
       { kind: 'github', label: 'GitHub', href: 'https://github.com/LallyDik' },
       { kind: 'duallin', label: 'Duallin', href: 'https://www.duallin.com/in/leah-dickman' },
     ],
