@@ -8,9 +8,14 @@ import { he, en } from '../src/data/content'
 let heDoc: HTMLElement
 let enDoc: HTMLElement
 
+// A static build emits pages straight into dist/; the Cloudflare adapter
+// splits output into dist/client (assets) and dist/server (the worker). Pick
+// whichever this build produced so the assertions hold under either mode.
+const distRoot = existsSync('dist/client/index.html') ? 'dist/client' : 'dist'
+
 beforeAll(() => {
-  heDoc = parse(readFileSync('dist/index.html', 'utf8'))
-  enDoc = parse(readFileSync('dist/en/index.html', 'utf8'))
+  heDoc = parse(readFileSync(`${distRoot}/index.html`, 'utf8'))
+  enDoc = parse(readFileSync(`${distRoot}/en/index.html`, 'utf8'))
 })
 
 // Astro hashes emitted filenames, so discover them rather than hardcoding
@@ -76,7 +81,7 @@ describe('document shell', () => {
     // above: someone swapping the self-hosted @font-face src for a CDN URL
     // (or a background: url()) inside CSS. Read every built stylesheet from
     // disk and check.
-    const cssDir = 'dist/_astro'
+    const cssDir = `${distRoot}/_astro`
     const cssFiles = readdirSync(cssDir).filter((f) => f.endsWith('.css'))
     expect(cssFiles.length).toBeGreaterThan(0)
     for (const file of cssFiles) {
@@ -200,7 +205,7 @@ describe('projects', () => {
         expect(src).toMatch(/^\/projects\/.+\.webp$/)
         // The referenced file must actually exist in the build output, so a
         // typo'd or renamed cover is a failed build rather than a live 404.
-        expect(existsSync(`dist${src}`)).toBe(true)
+        expect(existsSync(`${distRoot}${src}`)).toBe(true)
         // Decorative: the card's h3 already names the project, so a screen
         // reader must not hear the same thing twice.
         expect(cover!.getAttribute('alt')).toBe('')
@@ -332,8 +337,8 @@ describe('contact', () => {
   })
 
   it('ships both CV files in the build output', () => {
-    expect(existsSync('dist/cv/leah-dickman-he.pdf')).toBe(true)
-    expect(existsSync('dist/cv/leah-dickman-en.pdf')).toBe(true)
+    expect(existsSync(`${distRoot}/cv/leah-dickman-he.pdf`)).toBe(true)
+    expect(existsSync(`${distRoot}/cv/leah-dickman-en.pdf`)).toBe(true)
   })
 
   it('never renders a linkedin link', () => {
@@ -372,23 +377,23 @@ describe('structured data and crawling', () => {
   })
 
   it('emits a sitemap and robots file', () => {
-    expect(existsSync('dist/sitemap-index.xml')).toBe(true)
-    expect(existsSync('dist/robots.txt')).toBe(true)
+    expect(existsSync(`${distRoot}/sitemap-index.xml`)).toBe(true)
+    expect(existsSync(`${distRoot}/robots.txt`)).toBe(true)
 
-    const robots = readFileSync('dist/robots.txt', 'utf8')
+    const robots = readFileSync(`${distRoot}/robots.txt`, 'utf8')
     expect(robots).toContain('Sitemap: https://leahdick-dev.com/sitemap-index.xml')
 
     // The index file only lists child sitemap(s); the actual page URLs live
     // in whichever child file(s) it points at, so follow the reference
     // rather than assuming a filename.
-    const index = readFileSync('dist/sitemap-index.xml', 'utf8')
+    const index = readFileSync(`${distRoot}/sitemap-index.xml`, 'utf8')
     const childLocs = [...index.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1])
     expect(childLocs.length).toBeGreaterThan(0)
 
     const childPages = childLocs.map((loc) => {
       const path = new URL(loc).pathname
-      expect(existsSync(`dist${path}`)).toBe(true)
-      return readFileSync(`dist${path}`, 'utf8')
+      expect(existsSync(`${distRoot}${path}`)).toBe(true)
+      return readFileSync(`${distRoot}${path}`, 'utf8')
     })
     const sitemapContent = childPages.join('\n')
 
@@ -421,7 +426,7 @@ describe('rtl correctness', () => {
     // properties (padding-inline-start, inset-inline-end, text-align: start)
     // instead of physical ones (padding-left, text-align: right) — a
     // physical property mirrors incorrectly when dir="rtl".
-    const cssDir = 'dist/_astro'
+    const cssDir = `${distRoot}/_astro`
     const cssFiles = readdirSync(cssDir).filter((f) => f.endsWith('.css'))
     expect(cssFiles.length).toBeGreaterThan(0)
 
