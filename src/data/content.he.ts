@@ -11,114 +11,123 @@ export const he: SiteContent = {
   },
   hero: {
     name: 'לאה דיקמן',
-    title: 'מפתחת Full Stack ומהנדסת פתרונות AI',
-    positioning:
-      'למעלה משנתיים ניסיון בפיתוח מערכות Full Stack, שירותי Backend ומוצרי SaaS, ובשילוב יכולות AI במערכות אמיתיות.',
+    title: 'בונה מוצרי AI ומערכות Full Stack שרצות ב‑Production',
+    stackLine: 'React · TypeScript · .NET · Node.js · מערכות AI',
     ctaProjects: 'לפרויקטים',
-    ctaContact: 'צרו קשר',
+    ctaCv: 'הורדת קורות חיים',
+    stats: ['Full Stack + AI', 'מערכות Production', 'פיתוח מקצה לקצה'],
   },
   capabilities: {
-    heading: 'יכולות ליבה',
+    heading: 'תחומי ליבה',
     items: [
       {
-        kind: 'featured',
-        title: 'פיתוח בקוד',
-        areas: [
-          {
-            area: 'קוד נקי וארכיטקטורה',
-            detail:
-              'כתיבת קוד קריא ומתוחזק לפי עקרונות Clean Architecture — הפרדת שכבות, אחריות ברורה ומבנה שנשאר קל להרחבה ולתחזוקה.',
-          },
-          {
-            area: 'פיתוח Full Stack מקצה לקצה',
-            detail:
-              'בניית מערכות שלמות מהשרת ועד הממשק — C# ו‑ASP.NET Core, Node.js, React ו‑TypeScript, המחוברים ב‑REST APIs.',
-          },
-          {
-            area: 'שילוב יכולות AI במערכות',
-            detail:
-              'הטמעת LLMs, סוכנים ו‑RAG כחלק אמין ומובנה מהמוצר — יכולת שמשולבת בתוך הזרימה, לא הדבקה חיצונית.',
-          },
-          {
-            area: 'מסדי נתונים ואמינות',
-            detail:
-              'תכנון סכימות ב‑SQL Server, PostgreSQL/Supabase ו‑MongoDB עם EF Core, ובנייה לביצועים ולאמינות בסביבת Production.',
-          },
-        ],
-        tags: [
-          'C#',
-          'ASP.NET Core',
-          'EF Core',
-          'SQL Server',
-          'React',
-          'TypeScript',
-          'Node.js',
-          'Supabase',
-          'REST APIs',
-          'Git',
-        ],
+        kind: 'compact',
+        title: 'הנדסת Full Stack',
+        lead: 'מערכות שלמות מהשרת ועד הממשק, לפי עקרונות Clean Architecture.',
+        // "ASP.NET Core" rather than a bare ".NET": a leading dot reorders to
+        // the wrong end under RTL and renders as "NET.".
+        tags: ['React', 'TypeScript', 'ASP.NET Core', 'Node.js'],
       },
       {
         kind: 'compact',
-        title: 'מערכות AI',
+        title: 'הנדסת AI',
         lead: 'הטמעת יכולות AI במוצרים אמיתיים — מהגדרת התרחיש ועד פלט אמין.',
-        tags: ['LLMs', 'RAG', 'AI Agents', 'Prompt Engineering', 'Structured Outputs'],
+        tags: ['LLMs', 'RAG', 'AI Agents', 'Structured Outputs'],
       },
       {
         kind: 'compact',
         title: 'אוטומציה ואינטגרציות',
         lead: 'חיבור מערכות ותהליכים אוטומטיים בין כלים ומקורות מידע.',
-        tags: ['n8n', 'Make', 'Bubble', 'Webhooks', 'אינטגרציות API'],
+        tags: ['n8n', 'Make', 'APIs', 'Webhooks'],
       },
     ],
   },
   projects: {
     heading: 'פרויקטים',
     repoLabel: 'קוד המקור',
-    items: [
+    contributionLabel: 'מה בניתי',
+    viewLabel: 'לצפייה בפרויקט',
+    groups: [
       {
-        name: 'מערכת ניהול שכירות',
-        description:
-          'ניהול שוכרים, יחידות ותשלומים — שכר דירה, חשמל, מים וגז לפי קריאת מונה, על לוח עברי ולועזי.',
-        role: 'מוצר עצמאי · פיתוח מלא בקוד',
-        tech: ['React', 'TypeScript', 'Supabase'],
-        url: 'https://nihulschirut.com',
-        repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
-        image: '/projects/nihul.webp',
+        label: 'פרויקטים מרכזיים',
+        items: [
+          {
+            name: 'Talmid Track',
+            description:
+              'מערכת לניהול ומעקב אחר תלמידים — נוכחות, טיפולים, משימות והתראות, על לוח עברי מלא.',
+            contribution:
+              'תכנון ופיתוח המוצר מקצה לקצה: ארכיטקטורת האפליקציה, מודל הנתונים והרשאות רב‑דיירים, לוחות בקרה, טפסים ו‑validation, ותהליכי דיווח וייצוא. הליבה הטכנית היא מנוע OCR לזיהוי דפי נוכחות בכתב‑יד עברי — רסטריזציה וחיתוך של הסריקה בצד‑הלקוח, זיהוי מבוסס Vision עם פלט מובנה, והכרעת‑רוב שמסמנת רשומות לא‑ודאיות לאימות אנושי.',
+            tech: ['React 19', 'TypeScript', 'TanStack', 'Supabase', 'Tailwind', 'OCR'],
+            url: 'https://talmid-track.lovable.app/',
+            repoUrl: 'https://github.com/LallyDik/talmid-track',
+            image: '/projects/talmid-track.webp',
+            imageIsDiagram: true,
+            scale: 'lead',
+          },
+          {
+            name: 'מערכת ניהול שכירות',
+            description:
+              'ניהול שוכרים, יחידות ותשלומים — שכר דירה, חשמל, מים וגז לפי קריאת מונה, על לוח עברי ולועזי.',
+            contribution:
+              'מוצר עצמאי שבניתי מאפס בקוד — מודל הנתונים, חישובי החיוב לפי קריאות מונה, ניהול המשתמשים והממשק כולו.',
+            tech: ['React', 'TypeScript', 'Supabase'],
+            url: 'https://nihulschirut.com',
+            repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
+            image: '/projects/nihul.webp',
+            scale: 'lead',
+          },
+        ],
       },
       {
-        name: 'QSellerAI',
-        description: 'פלטפורמה לניתוח שיחות מכירה ושירות.',
-        role: 'AI Engineer · גרסה חדשה מלאה, שרתים ואוטומציות',
-        tech: ['Bubble', 'n8n', 'Make', 'ניהול שרתים'],
-        url: 'https://www.qsellerai.com/',
-        image: '/projects/qsellerai.webp',
+        label: 'מוצרי AI ו‑Production',
+        items: [
+          {
+            name: 'QSellerAI',
+            description: 'פלטפורמה לניתוח שיחות מכירה ושירות.',
+            contribution:
+              'בניית גרסה חדשה מלאה של המוצר, כולל תהליכי AI לניתוח השיחות, אוטומציות, אינטגרציות וניהול השרתים.',
+            tech: ['Bubble', 'n8n', 'Make', 'ניהול שרתים'],
+            url: 'https://www.qsellerai.com/',
+            image: '/projects/qsellerai.webp',
+            scale: 'major',
+          },
+          {
+            name: 'Plenty.AI',
+            description:
+              'ניהול תקציב משפחתי מבוסס AI — דיווח הוצאות בוואטסאפ בהקלטה, טקסט או צילום קבלה, עם קטגוריזציה אוטומטית.',
+            contribution:
+              'פיתוח פיצ׳רים בקוד סביב זרימת הדיווח — עיבוד ההודעות הנכנסות, הקטגוריזציה האוטומטית והצגתה במוצר.',
+            tech: ['React', 'TypeScript', 'Supabase', 'LLMs'],
+            url: 'https://plentyai.co.il',
+            image: '/projects/plenty.webp',
+            scale: 'major',
+          },
+        ],
       },
       {
-        name: 'CBS — כמה זה עולה לי',
-        description:
-          'מחשבון עלות שכר שנתית לבעלי עסקים — כמה באמת עולה עובד — שבניתי עבור מבקר שכר מוסמך.',
-        role: 'פיתוח מלא מאפס · מטעם חברה',
-        tech: ['Bubble'],
-        url: 'https://www.cbs.co.il/step/%d7%9b%d7%9e%d7%94-%d7%96%d7%94-%d7%a2%d7%95%d7%9c%d7%94-%d7%9c%d7%99/',
-        image: '/projects/cbs.webp',
-      },
-      {
-        name: 'WonderMe',
-        description: 'יצירה רגשית בליווי AI.',
-        role: 'פיתוח פיצ׳רים · Prompt Engineering',
-        tech: ['Bubble', 'LLMs'],
-        url: 'https://wonderme.ai/',
-        image: '/projects/wonderme.webp',
-      },
-      {
-        name: 'Plenty.AI',
-        description:
-          'ניהול תקציב משפחתי מבוסס AI — דיווח הוצאות בוואטסאפ בהקלטה, טקסט או צילום קבלה, עם קטגוריזציה אוטומטית.',
-        role: 'פיתוח פיצ׳רים בקוד',
-        tech: ['React', 'TypeScript', 'Supabase'],
-        url: 'https://plentyai.co.il',
-        image: '/projects/plenty.webp',
+        label: 'פרויקטים נוספים',
+        items: [
+          {
+            name: 'CBS — כמה זה עולה לי',
+            description:
+              'מחשבון עלות שכר שנתית לבעלי עסקים — כמה באמת עולה עובד.',
+            contribution:
+              'פיתוח מלא מאפס עבור מבקר שכר מוסמך, כולל מודל החישוב וזרימת השאלון.',
+            tech: ['Bubble'],
+            url: 'https://www.cbs.co.il/step/%d7%9b%d7%9e%d7%94-%d7%96%d7%94-%d7%a2%d7%95%d7%9c%d7%94-%d7%9c%d7%99/',
+            image: '/projects/cbs.webp',
+            scale: 'minor',
+          },
+          {
+            name: 'WonderMe',
+            description: 'יצירה רגשית בליווי AI.',
+            contribution: 'פיתוח פיצ׳רים ועבודת Prompt Engineering על זרימות ה‑AI במוצר.',
+            tech: ['Bubble', 'LLMs'],
+            url: 'https://wonderme.ai/',
+            image: '/projects/wonderme.webp',
+            scale: 'minor',
+          },
+        ],
       },
     ],
   },
@@ -129,6 +138,7 @@ export const he: SiteContent = {
         period: '2024 – היום',
         role: 'מפתחת Full Stack ומהנדסת פתרונות AI',
         org: 'SaaS Systems',
+        stack: ['React', 'Node.js', 'Supabase', 'AI'],
         bullets: [
           'פיתוח אפליקציות Web ומערכות SaaS באמצעות React, Node.js ו‑Supabase.',
           'פיתוח שירותי Backend, REST APIs, לוגיקה עסקית ואינטגרציות עם שירותי צד שלישי.',
@@ -141,6 +151,7 @@ export const he: SiteContent = {
         period: '2024',
         role: 'מפתחת Full Stack',
         org: 'Easy Tax',
+        stack: ['C#', 'ASP.NET Core', 'EF Core', 'SQL Server'],
         bullets: [
           'פיתוח מודול "חשבוניות ישראל" להקצאת מספרי חשבוניות מס לעסקים.',
           'בניית צד שרת מאפס ב‑C# ו‑ASP.NET Core 8.',
@@ -153,21 +164,11 @@ export const he: SiteContent = {
   tech: {
     heading: 'סטאק טכנולוגי',
     groups: [
-      { label: 'שפות', items: ['C#', 'JavaScript', 'TypeScript', 'Python'] },
-      {
-        label: 'Backend',
-        items: ['ASP.NET Core', '.NET', 'Node.js', 'REST APIs', 'EF Core'],
-      },
-      { label: 'Frontend', items: ['React', 'HTML', 'CSS'] },
-      { label: 'מסדי נתונים', items: ['SQL Server', 'MongoDB', 'Supabase'] },
-      {
-        label: 'AI',
-        items: ['LLMs', 'Prompt Engineering', 'RAG', 'AI Agents', 'Structured Outputs'],
-      },
-      {
-        label: 'אוטומציה וכלים',
-        items: ['n8n', 'Make', 'Bubble.io', 'Git', 'Docker', 'Postman', 'Webhooks'],
-      },
+      { label: 'Frontend', items: ['React', 'TypeScript', 'TanStack', 'Tailwind'] },
+      { label: 'Backend', items: ['C#', 'ASP.NET Core', 'Node.js', 'REST APIs', 'EF Core'] },
+      { label: 'Data', items: ['SQL Server', 'PostgreSQL', 'Supabase', 'MongoDB'] },
+      { label: 'AI', items: ['LLMs', 'RAG', 'AI Agents', 'Structured Outputs'] },
+      { label: 'אוטומציה', items: ['n8n', 'Make', 'Webhooks', 'Git', 'Docker'] },
     ],
   },
   education: {
@@ -179,6 +180,8 @@ export const he: SiteContent = {
   },
   contact: {
     heading: 'צרו קשר',
+    prompt: 'בונים מוצר Full Stack או AI?',
+    ctaLabel: 'בואו נדבר',
     links: [
       { kind: 'email', label: 'ld3250803@gmail.com', href: 'mailto:ld3250803@gmail.com' },
       { kind: 'phone', label: '058-3250803', href: 'tel:+972583250803' },

@@ -102,10 +102,30 @@ describe('hero', () => {
     expect(enH1s[0].text).toContain('Leah Dickman')
   })
 
-  it('offers both calls to action as in-page anchors', () => {
-    for (const doc of [heDoc, enDoc]) {
-      expect(doc.querySelector('a[href="#projects"]')).not.toBeNull()
-      expect(doc.querySelector('a[href="#contact"]')).not.toBeNull()
+  it('leads with a projects anchor and a CV download', () => {
+    for (const [doc, content] of [
+      [heDoc, he],
+      [enDoc, en],
+    ] as const) {
+      const hero = doc.querySelector('.hero')
+      expect(hero?.querySelector('a[href="#projects"]')).not.toBeNull()
+      // The secondary CTA is the CV itself, so a recruiter can take the
+      // document away without hunting for the contact section.
+      const cv = hero?.querySelector(`a[href="${content.contact.cvHref}"]`)
+      expect(cv).not.toBeNull()
+      expect(cv?.getAttribute('download')).not.toBeUndefined()
+    }
+  })
+
+  it('states the positioning headline and three proof points', () => {
+    for (const [doc, content] of [
+      [heDoc, he],
+      [enDoc, en],
+    ] as const) {
+      const hero = doc.querySelector('.hero')
+      expect(hero?.querySelector('h1')?.text).toContain(content.hero.title)
+      expect(hero?.querySelector('.stack-line')?.text.trim()).toBe(content.hero.stackLine)
+      expect(hero?.querySelectorAll('.stats li')).toHaveLength(3)
     }
   })
 
@@ -125,54 +145,76 @@ describe('hero', () => {
   })
 })
 
-describe('capabilities', () => {
-  it('renders one featured card and two compact cards', () => {
+describe('core expertise', () => {
+  it('renders exactly three compact areas', () => {
     for (const doc of [heDoc, enDoc]) {
-      expect(doc.querySelectorAll('.capability.featured')).toHaveLength(1)
-      expect(doc.querySelectorAll('.capability.compact')).toHaveLength(2)
+      expect(doc.querySelectorAll('.capability')).toHaveLength(3)
+      expect(doc.querySelectorAll('.capability.compact')).toHaveLength(3)
+      // The old nested "featured" card is gone — no area/detail pairs remain.
+      expect(doc.querySelectorAll('.capability .area')).toHaveLength(0)
     }
   })
 
-  it('details four capability areas in the featured card', () => {
+  it('gives each area a heading, a one-line lead and tags', () => {
     for (const doc of [heDoc, enDoc]) {
-      const featured = doc.querySelector('.capability.featured')
-      expect(featured?.querySelectorAll('.area')).toHaveLength(4)
-      expect(featured?.querySelectorAll('.detail')).toHaveLength(4)
+      for (const area of doc.querySelectorAll('.capability')) {
+        expect(area.querySelector('h3')?.text.trim().length).toBeGreaterThan(0)
+        expect(area.querySelector('.lead')?.text.trim().length).toBeGreaterThan(0)
+        expect(area.querySelectorAll('.tag').length).toBeGreaterThan(0)
+      }
     }
   })
+})
 
-  it('puts the featured card first in source order', () => {
+describe('section order', () => {
+  it('places projects before core expertise', () => {
+    // The projects are the strongest professional evidence on the page, so
+    // they must come straight after the hero rather than behind a long
+    // capabilities block.
     for (const doc of [heDoc, enDoc]) {
-      const first = doc.querySelector('.capability')
-      expect(first?.classList.contains('featured')).toBe(true)
+      const sections = doc
+        .querySelectorAll('section[id]')
+        .map((s) => s.getAttribute('id'))
+      expect(sections.indexOf('projects')).toBeLessThan(sections.indexOf('capabilities'))
+      expect(sections[0]).toBe('projects')
     }
   })
 })
 
 describe('projects', () => {
-  it('renders five cards under an anchorable section', () => {
+  it('renders six cards in three groups under an anchorable section', () => {
     for (const doc of [heDoc, enDoc]) {
       expect(doc.querySelector('#projects')).not.toBeNull()
-      expect(doc.querySelectorAll('.project-card')).toHaveLength(5)
+      expect(doc.querySelectorAll('.project-card')).toHaveLength(6)
+      expect(doc.querySelectorAll('#projects .group')).toHaveLength(3)
     }
   })
 
-  it('states a role on every card', () => {
+  it('gives the two lead cards a contribution block', () => {
     for (const doc of [heDoc, enDoc]) {
-      const roles = doc.querySelectorAll('.project-card .role')
-      expect(roles).toHaveLength(5)
-      for (const role of roles) {
-        expect(role.text.trim().length).toBeGreaterThan(0)
+      const leads = doc.querySelectorAll('.project-card.lead')
+      expect(leads).toHaveLength(2)
+      for (const lead of leads) {
+        const text = lead.querySelector('.contribution-text')?.text.trim() ?? ''
+        // This is the answer a recruiter is actually scanning for, so it
+        // must be substantive rather than a stub.
+        expect(text.length).toBeGreaterThan(60)
       }
+    }
+  })
+
+  it('no longer prints a role line on any card', () => {
+    for (const doc of [heDoc, enDoc]) {
+      expect(doc.querySelectorAll('.project-card .role')).toHaveLength(0)
     }
   })
 
   it('opens external links safely in a new tab', () => {
     for (const doc of [heDoc, enDoc]) {
       const links = doc.querySelectorAll('.project-card a')
-      // Five cards each contribute their live-product link, plus one repo
-      // link on the rental management card.
-      expect(links).toHaveLength(6)
+      // Six cards each contribute their live-product link, plus repo links
+      // on Talmid Track and the rental management card.
+      expect(links).toHaveLength(8)
       for (const link of links) {
         expect(link.getAttribute('target')).toBe('_blank')
         expect(link.getAttribute('rel')).toContain('noopener')
@@ -180,24 +222,30 @@ describe('projects', () => {
     }
   })
 
-  it('leads with the independently built product', () => {
-    // The lead project's name differs per language, so assert against the
-    // content module rather than a hardcoded string — a hardcoded Hebrew
-    // string only ever checked the Hebrew route, so an English regression
-    // that reordered projects.items would ship unnoticed.
+  it('leads with Talmid Track as the flagship project', () => {
     for (const [doc, content] of [
       [heDoc, he],
       [enDoc, en],
     ] as const) {
       const first = doc.querySelector('.project-card h3')
-      expect(first?.text).toContain(content.projects.items[0].name)
+      expect(first?.text).toContain(content.projects.groups[0].items[0].name)
+      expect(first?.text).toContain('Talmid Track')
+    }
+  })
+
+  it('surfaces the OCR work on the flagship card', () => {
+    // The OCR engine is the strongest technical signal in the portfolio; if
+    // the contribution copy loses it, the card stops earning its top slot.
+    for (const doc of [heDoc, enDoc]) {
+      const flagship = doc.querySelector('.project-card.lead')
+      expect(flagship?.text).toContain('OCR')
     }
   })
 
   it('gives every project card a cover image that ships in the build', () => {
     for (const doc of [heDoc, enDoc]) {
       const cards = doc.querySelectorAll('.project-card')
-      expect(cards).toHaveLength(5)
+      expect(cards).toHaveLength(6)
       for (const card of cards) {
         const cover = card.querySelector('img.cover')
         expect(cover).not.toBeNull()
@@ -215,12 +263,12 @@ describe('projects', () => {
 
   it('hides the arrow glyph on project links from assistive technology', () => {
     for (const doc of [heDoc, enDoc]) {
-      // This asserts per link, not per card, so the rental card's extra repo
-      // link (its own arrow, alongside the live-product link's arrow) is
+      // This asserts per link, not per card, so the two repo links (each
+      // with its own arrow, alongside the live-product link's arrow) are
       // covered by the same loop rather than breaking an assumption of one
       // arrow per card.
       const links = doc.querySelectorAll('.project-card a')
-      expect(links).toHaveLength(6)
+      expect(links).toHaveLength(8)
       for (const link of links) {
         const arrow = link.querySelector('span[aria-hidden="true"]')
         expect(arrow).not.toBeNull()
@@ -229,30 +277,33 @@ describe('projects', () => {
     }
   })
 
-  it('links the rental management card to its source repository', () => {
+  it('links exactly the open-source cards to their repositories', () => {
     for (const [doc, content] of [
       [heDoc, he],
       [enDoc, en],
     ] as const) {
-      const repoLinks = doc.querySelectorAll('.project-card a[href="https://github.com/LallyDik/bayit-yisraeli-menahal"]')
-      expect(repoLinks).toHaveLength(1)
+      const projects = content.projects.groups.flatMap((g) => g.items)
+      const withRepo = projects.filter((p) => p.repoUrl)
+      // Talmid Track and the rental system are the two public repos.
+      expect(withRepo).toHaveLength(2)
 
-      const repoLink = repoLinks[0]
-      expect(repoLink.getAttribute('target')).toBe('_blank')
-      expect(repoLink.getAttribute('rel')).toContain('noopener')
-      expect(repoLink.querySelector('.visually-hidden')).not.toBeNull()
-
-      // Every other project card has no repoUrl in the content module, so
-      // none of them should render a repo link.
       const cards = doc.querySelectorAll('.project-card')
-      expect(cards).toHaveLength(content.projects.items.length)
-      const cardsWithRepoLink = cards.filter(
-        (card) => card.querySelectorAll('a[href="https://github.com/LallyDik/bayit-yisraeli-menahal"]').length > 0
-      )
-      expect(cardsWithRepoLink).toHaveLength(1)
+      expect(cards).toHaveLength(projects.length)
 
-      const projectsWithRepoUrl = content.projects.items.filter((p) => p.repoUrl)
-      expect(projectsWithRepoUrl).toHaveLength(1)
+      for (const project of withRepo) {
+        const repoLinks = doc.querySelectorAll(`.project-card a[href="${project.repoUrl}"]`)
+        expect(repoLinks).toHaveLength(1)
+        const repoLink = repoLinks[0]
+        expect(repoLink.getAttribute('target')).toBe('_blank')
+        expect(repoLink.getAttribute('rel')).toContain('noopener')
+        expect(repoLink.querySelector('.visually-hidden')).not.toBeNull()
+      }
+
+      // Cards without a repoUrl must not invent one.
+      const cardsWithRepoLink = cards.filter(
+        (card) => card.querySelectorAll('a[href*="github.com"]').length > 0
+      )
+      expect(cardsWithRepoLink).toHaveLength(2)
     }
   })
 })
@@ -284,11 +335,21 @@ describe('experience, stack and education', () => {
     }
   })
 
-  it('groups the tech stack with languages first', () => {
+  it('states a compact stack line on every timeline entry', () => {
+    for (const doc of [heDoc, enDoc]) {
+      const entries = doc.querySelectorAll('.experience-entry')
+      expect(entries).toHaveLength(2)
+      for (const entry of entries) {
+        expect(entry.querySelector('.stack')?.text.trim().length).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('groups the tech stack into five reference columns', () => {
     for (const doc of [heDoc, enDoc]) {
       const groups = doc.querySelectorAll('.tech-group')
-      expect(groups).toHaveLength(6)
-      expect(groups[0].querySelector('h3')?.text).toMatch(/שפות|Languages/)
+      expect(groups).toHaveLength(5)
+      expect(groups[0].querySelector('h3')?.text).toMatch(/Frontend/)
     }
   })
 
@@ -334,6 +395,21 @@ describe('contact', () => {
   it('offers the CV for the matching language', () => {
     expect(heDoc.querySelector('a[href="/cv/leah-dickman-he.pdf"]')).not.toBeNull()
     expect(enDoc.querySelector('a[href="/cv/leah-dickman-en.pdf"]')).not.toBeNull()
+  })
+
+  it('opens the section with a CTA rather than a numbered eyebrow', () => {
+    for (const [doc, content] of [
+      [heDoc, he],
+      [enDoc, en],
+    ] as const) {
+      const contact = doc.querySelector('#contact')
+      expect(contact?.querySelector('.prompt')?.text.trim()).toBe(content.contact.prompt)
+
+      const cta = contact?.querySelector('.cta')
+      expect(cta?.text).toContain(content.contact.ctaLabel)
+      // The CTA must actually reach her, not just look like a button.
+      expect(cta?.getAttribute('href')).toMatch(/^mailto:/)
+    }
   })
 
   it('ships both CV files in the build output', () => {

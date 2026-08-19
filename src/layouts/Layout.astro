@@ -56,18 +56,6 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
 
         if (reduce) return
 
-        // Type the hero kicker out like a terminal (the caret keeps blinking).
-        var hk = document.querySelector('.hero .kicker')
-        if (hk) {
-          var full = hk.textContent
-          hk.textContent = ''
-          var ci = 0
-          ;(function type() {
-            hk.textContent = full.slice(0, ci++)
-            if (ci <= full.length) setTimeout(type, 45)
-          })()
-        }
-
         // Staggered scroll reveal. A manual position check on scroll is used
         // (not IntersectionObserver) so it fires reliably, and a safety net
         // reveals anything left after a few seconds — content is never stuck
@@ -75,7 +63,7 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
         // transform is free again (e.g. for card tilt).
         var targets = [].slice.call(
           document.querySelectorAll(
-            '.band:not(.hero) .section-head, .band:not(.hero) .grid > *, .band:not(.hero) .entries > *, .band:not(.hero) .links > *, .band:not(.hero) .entry'
+            '.band:not(.hero) .section-head, .band:not(.hero) .grid > *, .band:not(.hero) .bento > *, .band:not(.hero) .entries > *, .band:not(.hero) .links > *, .band:not(.hero) .entry'
           )
         )
         targets.forEach(function (el) {
@@ -119,29 +107,6 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
 
         if (!fine) return
 
-        // Spotlight following the cursor inside every card.
-        document.querySelectorAll('.capability, .project-card').forEach(function (card) {
-          card.addEventListener('pointermove', function (e) {
-            var r = card.getBoundingClientRect()
-            card.style.setProperty('--mx', e.clientX - r.left + 'px')
-            card.style.setProperty('--my', e.clientY - r.top + 'px')
-          })
-        })
-
-        // 3D tilt on project cards.
-        document.querySelectorAll('.project-card').forEach(function (card) {
-          card.addEventListener('pointermove', function (e) {
-            var r = card.getBoundingClientRect()
-            var px = (e.clientX - r.left) / r.width - 0.5
-            var py = (e.clientY - r.top) / r.height - 0.5
-            card.style.transform =
-              'perspective(900px) rotateX(' + -py * 3 + 'deg) rotateY(' + px * 3 + 'deg) translateY(-3px)'
-          })
-          card.addEventListener('pointerleave', function () {
-            card.style.transform = ''
-          })
-        })
-
         // Holographic confetti when the CV is downloaded.
         var cv = document.querySelector('.cv')
         if (cv)
@@ -166,22 +131,6 @@ const canonical = content.lang === 'he' ? `${site}/` : `${site}/en`
               })(p)
             }
           })
-
-        // Magnetic pull on the gradient buttons.
-        document.querySelectorAll('.btn--solid, .cv').forEach(function (btn) {
-          btn.addEventListener('pointermove', function (e) {
-            var r = btn.getBoundingClientRect()
-            btn.style.transform =
-              'translate(' +
-              (e.clientX - (r.left + r.width / 2)) * 0.25 +
-              'px,' +
-              (e.clientY - (r.top + r.height / 2)) * 0.4 +
-              'px)'
-          })
-          btn.addEventListener('pointerleave', function () {
-            btn.style.transform = ''
-          })
-        })
       })()
     </script>
   </body>

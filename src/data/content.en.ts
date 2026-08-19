@@ -11,114 +11,122 @@ export const en: SiteContent = {
   },
   hero: {
     name: 'Leah Dickman',
-    title: 'Full Stack Developer & AI Solutions Engineer',
-    positioning:
-      '2+ years building full stack systems, backend services, and AI-powered SaaS products.',
+    title: 'Full Stack Developer building production-ready AI products',
+    stackLine: 'React · TypeScript · .NET · Node.js · AI Systems',
     ctaProjects: 'View projects',
-    ctaContact: 'Get in touch',
+    ctaCv: 'Download CV',
+    stats: ['Full Stack + AI', 'Production Systems', 'End-to-End Development'],
   },
   capabilities: {
-    heading: 'Core capabilities',
+    heading: 'Core expertise',
     items: [
       {
-        kind: 'featured',
-        title: 'Engineering in code',
-        areas: [
-          {
-            area: 'Clean code & architecture',
-            detail:
-              'Readable, maintainable code on Clean Architecture principles — layered separation, clear responsibilities and a structure that stays easy to extend.',
-          },
-          {
-            area: 'End-to-end full stack',
-            detail:
-              'Whole systems from server to interface — C# and ASP.NET Core, Node.js, React and TypeScript, tied together with REST APIs.',
-          },
-          {
-            area: 'AI woven into systems',
-            detail:
-              'LLMs, agents and RAG embedded as a reliable, structured part of the product — integrated into the flow, not bolted on.',
-          },
-          {
-            area: 'Data & reliability',
-            detail:
-              'Schema design across SQL Server, PostgreSQL/Supabase and MongoDB with EF Core, built for performance and production reliability.',
-          },
-        ],
-        tags: [
-          'C#',
-          'ASP.NET Core',
-          'EF Core',
-          'SQL Server',
-          'React',
-          'TypeScript',
-          'Node.js',
-          'Supabase',
-          'REST APIs',
-          'Git',
-        ],
+        kind: 'compact',
+        title: 'Full Stack Engineering',
+        lead: 'Whole systems from server to interface, on Clean Architecture principles.',
+        tags: ['React', 'TypeScript', '.NET', 'Node.js'],
       },
       {
         kind: 'compact',
-        title: 'AI systems',
+        title: 'AI Engineering',
         lead: 'AI capabilities embedded in real products — from use case to reliable output.',
-        tags: ['LLMs', 'RAG', 'AI Agents', 'Prompt Engineering', 'Structured Outputs'],
+        tags: ['LLMs', 'RAG', 'AI Agents', 'Structured Outputs'],
       },
       {
         kind: 'compact',
-        title: 'Automation & integrations',
+        title: 'Automation & Integrations',
         lead: 'Connecting systems and automating workflows across tools and data sources.',
-        tags: ['n8n', 'Make', 'Bubble', 'Webhooks', 'API integrations'],
+        tags: ['n8n', 'Make', 'APIs', 'Webhooks'],
       },
     ],
   },
   projects: {
     heading: 'Projects',
     repoLabel: 'Source code',
-    items: [
+    contributionLabel: 'My contribution',
+    viewLabel: 'View project',
+    groups: [
       {
-        name: 'Rental Management System',
-        description:
-          'Tenants, units and payments — rent, electricity, water and gas from meter readings, across the Hebrew and Gregorian calendars.',
-        role: 'Independent product · built end to end in code',
-        tech: ['React', 'TypeScript', 'Supabase'],
-        url: 'https://nihulschirut.com',
-        repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
-        image: '/projects/nihul.webp',
+        label: 'Featured projects',
+        items: [
+          {
+            name: 'Talmid Track',
+            description:
+              'A student management and tracking platform — attendance, casework, tasks and alerts, on a full Hebrew calendar.',
+            contribution:
+              'Designed and developed the product end-to-end: application architecture, the data model and multi-tenant permissions, dashboards, forms and validation, and reporting and export workflows. Its technical core is an OCR engine that reads handwritten Hebrew attendance sheets — client-side rasterising and column slicing, vision-based detection with structured output, and a majority vote that flags uncertain records for human review.',
+            tech: ['React 19', 'TypeScript', 'TanStack', 'Supabase', 'Tailwind', 'OCR'],
+            url: 'https://talmid-track.lovable.app/',
+            repoUrl: 'https://github.com/LallyDik/talmid-track',
+            image: '/projects/talmid-track.webp',
+            imageIsDiagram: true,
+            scale: 'lead',
+          },
+          {
+            name: 'Rental Management System',
+            description:
+              'Tenants, units and payments — rent, electricity, water and gas from meter readings, across the Hebrew and Gregorian calendars.',
+            contribution:
+              'An independent product I built from scratch in code — the data model, meter-based billing calculations, user management and the entire interface.',
+            tech: ['React', 'TypeScript', 'Supabase'],
+            url: 'https://nihulschirut.com',
+            repoUrl: 'https://github.com/LallyDik/bayit-yisraeli-menahal',
+            image: '/projects/nihul.webp',
+            scale: 'lead',
+          },
+        ],
       },
       {
-        name: 'QSellerAI',
-        description: 'A platform for analysing sales and customer service conversations.',
-        role: 'AI Engineer · full new version, servers and automations',
-        tech: ['Bubble', 'n8n', 'Make', 'Server management'],
-        url: 'https://www.qsellerai.com/',
-        image: '/projects/qsellerai.webp',
+        label: 'AI & production products',
+        items: [
+          {
+            name: 'QSellerAI',
+            description: 'A platform for analysing sales and customer service conversations.',
+            contribution:
+              'Built a full new version of the product, including the AI conversation-analysis workflows, automations, integrations and server management.',
+            tech: ['Bubble', 'n8n', 'Make', 'Server management'],
+            url: 'https://www.qsellerai.com/',
+            image: '/projects/qsellerai.webp',
+            scale: 'major',
+          },
+          {
+            name: 'Plenty.AI',
+            description:
+              'AI-driven household budgeting — expenses logged over WhatsApp by voice, text or a photo of the receipt, categorised automatically.',
+            contribution:
+              'Feature development in code around the logging flow — processing incoming messages, the automatic categorisation and how it surfaces in the product.',
+            tech: ['React', 'TypeScript', 'Supabase', 'LLMs'],
+            url: 'https://plentyai.co.il',
+            image: '/projects/plenty.webp',
+            scale: 'major',
+          },
+        ],
       },
       {
-        name: 'CBS — What It Really Costs Me',
-        description:
-          'An annual payroll-cost calculator for business owners — what an employee truly costs — that I built for a certified payroll auditor.',
-        role: 'Built from scratch · on behalf of a company',
-        tech: ['Bubble'],
-        url: 'https://www.cbs.co.il/step/%d7%9b%d7%9e%d7%94-%d7%96%d7%94-%d7%a2%d7%95%d7%9c%d7%94-%d7%9c%d7%99/',
-        image: '/projects/cbs.webp',
-      },
-      {
-        name: 'WonderMe',
-        description: 'Emotional creative work, guided by AI.',
-        role: 'Feature development · Prompt Engineering',
-        tech: ['Bubble', 'LLMs'],
-        url: 'https://wonderme.ai/',
-        image: '/projects/wonderme.webp',
-      },
-      {
-        name: 'Plenty.AI',
-        description:
-          'AI-driven household budgeting — expenses logged over WhatsApp by voice, text or a photo of the receipt, categorised automatically.',
-        role: 'Feature development in code',
-        tech: ['React', 'TypeScript', 'Supabase'],
-        url: 'https://plentyai.co.il',
-        image: '/projects/plenty.webp',
+        label: 'Additional work',
+        items: [
+          {
+            name: 'CBS — What It Really Costs Me',
+            description:
+              'An annual payroll-cost calculator for business owners — what an employee truly costs.',
+            contribution:
+              'Built from scratch for a certified payroll auditor, including the cost model and the questionnaire flow.',
+            tech: ['Bubble'],
+            url: 'https://www.cbs.co.il/step/%d7%9b%d7%9e%d7%94-%d7%96%d7%94-%d7%a2%d7%95%d7%9c%d7%94-%d7%9c%d7%99/',
+            image: '/projects/cbs.webp',
+            scale: 'minor',
+          },
+          {
+            name: 'WonderMe',
+            description: 'Emotional creative work, guided by AI.',
+            contribution:
+              'Feature development and prompt engineering across the product’s AI flows.',
+            tech: ['Bubble', 'LLMs'],
+            url: 'https://wonderme.ai/',
+            image: '/projects/wonderme.webp',
+            scale: 'minor',
+          },
+        ],
       },
     ],
   },
@@ -129,6 +137,7 @@ export const en: SiteContent = {
         period: '2024 – Present',
         role: 'Full Stack Developer & AI Solutions Engineer',
         org: 'SaaS Systems',
+        stack: ['React', 'Node.js', 'Supabase', 'AI'],
         bullets: [
           'Built web applications and SaaS systems using React, Node.js and Supabase.',
           'Developed backend services, REST APIs, business logic and third-party integrations.',
@@ -141,6 +150,7 @@ export const en: SiteContent = {
         period: '2024',
         role: 'Full Stack Developer',
         org: 'Easy Tax',
+        stack: ['C#', 'ASP.NET Core', 'EF Core', 'SQL Server'],
         bullets: [
           'Developed the Israeli e-Invoicing module for allocating tax invoice numbers to businesses.',
           'Built the server side from scratch in C# and ASP.NET Core 8.',
@@ -153,21 +163,11 @@ export const en: SiteContent = {
   tech: {
     heading: 'Tech stack',
     groups: [
-      { label: 'Languages', items: ['C#', 'JavaScript', 'TypeScript', 'Python'] },
-      {
-        label: 'Backend',
-        items: ['ASP.NET Core', '.NET', 'Node.js', 'REST APIs', 'EF Core'],
-      },
-      { label: 'Frontend', items: ['React', 'HTML', 'CSS'] },
-      { label: 'Databases', items: ['SQL Server', 'MongoDB', 'Supabase'] },
-      {
-        label: 'AI',
-        items: ['LLMs', 'Prompt Engineering', 'RAG', 'AI Agents', 'Structured Outputs'],
-      },
-      {
-        label: 'Automation & tools',
-        items: ['n8n', 'Make', 'Bubble.io', 'Git', 'Docker', 'Postman', 'Webhooks'],
-      },
+      { label: 'Frontend', items: ['React', 'TypeScript', 'TanStack', 'Tailwind'] },
+      { label: 'Backend', items: ['C#', 'ASP.NET Core', 'Node.js', 'REST APIs', 'EF Core'] },
+      { label: 'Data', items: ['SQL Server', 'PostgreSQL', 'Supabase', 'MongoDB'] },
+      { label: 'AI', items: ['LLMs', 'RAG', 'AI Agents', 'Structured Outputs'] },
+      { label: 'Automation', items: ['n8n', 'Make', 'Webhooks', 'Git', 'Docker'] },
     ],
   },
   education: {
@@ -179,6 +179,8 @@ export const en: SiteContent = {
   },
   contact: {
     heading: 'Get in touch',
+    prompt: 'Building a Full Stack or AI product?',
+    ctaLabel: 'Let’s talk',
     links: [
       { kind: 'email', label: 'ld3250803@gmail.com', href: 'mailto:ld3250803@gmail.com' },
       { kind: 'phone', label: '+972 58-325-0803', href: 'tel:+972583250803' },

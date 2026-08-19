@@ -9,7 +9,7 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<section id="stack" class="band band--cream">
+<section id="stack" class="band band--ink">
   <div class="wrap">
     <SectionHead num="04" title={content.tech.heading} />
 
@@ -31,10 +31,12 @@ const { content } = Astro.props
 </section>
 
 <style>
+  /* Reference only — the stack is already stated in the hero and on every
+     project card, so this stays compact and quiet. */
   .grid {
     display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.75rem 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
   .tech-group {
@@ -42,14 +44,14 @@ const { content } = Astro.props
   }
 
   h3 {
-    margin-block: 0 0.85rem;
+    margin-block: 0 0.8rem;
     font-family: var(--font-mono);
-    font-size: 0.76rem;
+    font-size: var(--step-label);
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: var(--accent);
     padding-block-end: 0.6rem;
-    border-block-end: 1px solid var(--line-on-cream);
+    border-block-end: 1px solid var(--line-on-ink);
   }
 </style>

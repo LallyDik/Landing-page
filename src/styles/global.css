@@ -28,6 +28,20 @@
   --wrap: 1200px;
   --measure: 60ch;
   --radius: 4px;
+
+  /* Type scale — wide gaps between levels so hierarchy reads instantly.
+     Desktop targets: h1 64-72, section 40-48, project 26-32, body 16-18. */
+  --step-hero: clamp(2.75rem, 6.5vw, 4.5rem);
+  --step-section: clamp(1.9rem, 4vw, 3rem);
+  --step-project-lead: clamp(1.6rem, 3vw, 2rem);
+  --step-project: clamp(1.25rem, 2vw, 1.6rem);
+  --step-body: clamp(1rem, 1.1vw, 1.125rem);
+  --step-label: 0.78rem;
+
+  /* Spacing rhythm — generous section breathing, tighter inside a section. */
+  --space-section: clamp(5rem, 11vw, 10rem);
+  --space-head: clamp(2.5rem, 5vw, 3.75rem);
+  --space-card: clamp(1.5rem, 2.2vw, 2rem);
 }
 
 *,
@@ -41,6 +55,7 @@ body {
   background: var(--cream);
   color: var(--ink);
   font-family: var(--font-body);
+  font-size: var(--step-body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
@@ -74,7 +89,7 @@ a {
 /* --- Full-bleed colour bands ---------------------------------------- */
 
 .band {
-  padding-block: clamp(3.5rem, 8vw, 7rem);
+  padding-block: var(--space-section);
   padding-inline: clamp(1.25rem, 6vw, 5rem);
 }
 
@@ -108,7 +123,7 @@ a {
 }
 
 .section-head {
-  margin-block-end: clamp(2rem, 5vw, 3.5rem);
+  margin-block-end: var(--space-head);
 }
 
 .section-head__top {
@@ -127,8 +142,8 @@ a {
 
 .section-heading {
   margin: 0;
-  font-size: clamp(1.9rem, 4.6vw, 3.1rem);
-  letter-spacing: -0.01em;
+  font-size: var(--step-section);
+  letter-spacing: -0.02em;
 }
 
 /* --- Cards -------------------------------------------------------- */
@@ -315,31 +330,6 @@ a {
   }
 }
 
-/* Static holographic gradient border on featured cards. */
-.capability.featured,
-.project-card.featured {
-  position: relative;
-}
-
-.capability.featured::after,
-.project-card.featured::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: conic-gradient(from 210deg, #f25caf, #8e63f0, #3fd0d0, #efce55, #f25caf);
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
 /* Infinite holographic keyword ticker. */
 .marquee {
   overflow: hidden;
@@ -386,31 +376,6 @@ a {
 
 .marquee__track--rev {
   animation-direction: reverse;
-}
-
-/* Spotlight that follows the cursor inside each card (JS sets --mx/--my). */
-.capability,
-.project-card {
-  position: relative;
-  --mx: 50%;
-  --my: 50%;
-}
-
-.capability::before,
-.project-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(220px circle at var(--mx) var(--my), rgba(142, 99, 240, 0.18), transparent 65%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.capability:hover::before,
-.project-card:hover::before {
-  opacity: 1;
 }
 
 /* Holographic confetti burst on CV download. */

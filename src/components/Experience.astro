@@ -9,7 +9,7 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<section id="experience" class="band band--ink">
+<section id="experience" class="band band--cream">
   <div class="wrap">
     <SectionHead num="03" title={content.experience.heading} />
 
@@ -17,15 +17,21 @@ const { content } = Astro.props
       {
         content.experience.items.map((entry) => (
           <article class="experience-entry">
+            <div class="marker" aria-hidden="true" />
+
             <p class="period">{entry.period}</p>
-            <h3>
-              {entry.role} · <span class="org">{entry.org}</span>
-            </h3>
-            <ul>
-              {entry.bullets.map((bullet) => (
-                <li>{bullet}</li>
-              ))}
-            </ul>
+
+            <div class="detail">
+              <h3>
+                {entry.role} · <span class="org">{entry.org}</span>
+              </h3>
+              <p class="stack">{entry.stack.join(' · ')}</p>
+              <ul>
+                {entry.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            </div>
           </article>
         ))
       }
@@ -36,45 +42,72 @@ const { content } = Astro.props
 <style>
   .entries {
     display: grid;
-    gap: 2.5rem;
+    gap: clamp(2.5rem, 5vw, 4rem);
   }
 
-  @media (min-width: 760px) {
-    .entries {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
+  /* A single spine runs down the column; each entry hangs a dot on it.
+     Below 720px the spine collapses and entries stack flat. */
   .experience-entry {
-    border-inline-start: 2px solid var(--accent);
-    padding-inline-start: 1.25rem;
+    position: relative;
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding-inline-start: 1.75rem;
+    border-inline-start: 1px solid var(--line-on-cream);
+  }
+
+  .marker {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.55rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    translate: -50% 0;
+  }
+
+  @media (min-width: 720px) {
+    .experience-entry {
+      grid-template-columns: 10rem 1fr;
+      align-items: start;
+    }
   }
 
   .period {
     margin: 0;
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: var(--cream-muted);
-    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
   }
 
   h3 {
-    margin-block: 0.35rem 0.85rem;
-    font-size: 1.2rem;
+    margin-block: 0 0.5rem;
+    font-size: var(--step-project);
+    letter-spacing: -0.01em;
   }
 
   .org {
     color: var(--accent);
   }
 
+  .stack {
+    margin: 0 0 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    max-width: none;
+  }
+
   ul {
     margin: 0;
     padding-inline-start: 1.1rem;
-    color: var(--cream-muted);
+    color: var(--ink-muted);
     font-size: 0.94rem;
   }
 
   li {
-    margin-block-end: 0.4rem;
+    margin-block-end: 0.45rem;
   }
 </style>

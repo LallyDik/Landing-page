@@ -43,14 +43,35 @@ describe('content integrity', () => {
     }
   })
 
-  it('exposes five projects with absolute https urls', () => {
+  it('exposes six projects across three groups with absolute https urls', () => {
     for (const content of [he, en]) {
-      expect(content.projects.items).toHaveLength(5)
-      for (const project of content.projects.items) {
+      expect(content.projects.groups).toHaveLength(3)
+      const projects = content.projects.groups.flatMap((g) => g.items)
+      expect(projects).toHaveLength(6)
+      for (const project of projects) {
         expect(() => new URL(project.url)).not.toThrow()
         expect(new URL(project.url).protocol).toBe('https:')
         expect(project.tech.length).toBeGreaterThan(0)
+        // Every card answers "what did she build", not just what it is.
+        expect(project.contribution.trim().length).toBeGreaterThan(0)
       }
+    }
+  })
+
+  it('leads with two full-width projects', () => {
+    for (const content of [he, en]) {
+      const lead = content.projects.groups[0].items
+      expect(lead).toHaveLength(2)
+      expect(lead.every((p) => p.scale === 'lead')).toBe(true)
+      // Talmid Track is the flagship and must come first.
+      expect(lead[0].name).toBe('Talmid Track')
+    }
+  })
+
+  it('offers three hero proof points and three expertise areas', () => {
+    for (const content of [he, en]) {
+      expect(content.hero.stats).toHaveLength(3)
+      expect(content.capabilities.items).toHaveLength(3)
     }
   })
 
@@ -59,10 +80,11 @@ describe('content integrity', () => {
     expect(serialized).not.toContain('linkedin')
   })
 
-  it('marks exactly one capability as featured', () => {
+  it('keeps every expertise area to a single compact line', () => {
+    // Core expertise is deliberately three equal areas now — no featured
+    // card with nested detail — so the section stays scannable.
     for (const content of [he, en]) {
-      const featured = content.capabilities.items.filter((c) => c.kind === 'featured')
-      expect(featured).toHaveLength(1)
+      expect(content.capabilities.items.every((c) => c.kind === 'compact')).toBe(true)
     }
   })
 })

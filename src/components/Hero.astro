@@ -16,15 +16,22 @@ const isExternal = (href: string) => href.startsWith('http')
 
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="kicker">Full Stack · AI Solutions</p>
-      <h1>{content.hero.name}</h1>
-      <p class="title">{content.hero.title}</p>
-      <p class="positioning">{content.hero.positioning}</p>
+      <p class="kicker">{content.hero.name}</p>
+      <h1>
+        <span class="visually-hidden">{content.hero.name} — </span>{content.hero.title}
+      </h1>
+      <p class="stack-line"><bdi dir="ltr">{content.hero.stackLine}</bdi></p>
 
       <div class="actions">
         <a class="btn btn--solid" href="#projects"><span>{content.hero.ctaProjects}</span></a>
-        <a class="btn btn--ghost" href="#contact"><span>{content.hero.ctaContact}</span></a>
+        <a class="btn btn--ghost" href={content.contact.cvHref} download
+          ><span>{content.hero.ctaCv}</span></a
+        >
       </div>
+
+      <ul class="stats">
+        {content.hero.stats.map((stat) => <li>{stat}</li>)}
+      </ul>
 
       <ul class="socials">
         {
@@ -68,7 +75,7 @@ const isExternal = (href: string) => href.startsWith('http')
 
   @media (min-width: 860px) {
     .hero-grid {
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.55fr 1fr;
     }
   }
 
@@ -76,33 +83,65 @@ const isExternal = (href: string) => href.startsWith('http')
     margin-block-end: 1.25rem;
   }
 
+  /* The English headline is markedly longer than the Hebrew one, so the
+     measure is set in ch (which tracks the font size) and kept wide enough
+     that neither language runs past ~4 lines and pushes the CTAs under the
+     fold. */
   h1 {
-    font-size: clamp(3rem, 9vw, 6rem);
+    font-size: var(--step-hero);
     font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 0.95;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
     margin: 0;
-  }
-
-  .title {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(1.15rem, 2.6vw, 1.6rem);
-    margin: 1.1rem 0 0;
     max-width: 22ch;
   }
 
-  .positioning {
+  /* The run is almost entirely Latin, so it is isolated as an LTR <bdi> —
+     otherwise a dot-prefixed token like ".NET" reorders and renders as
+     "NET.". The <p> itself keeps the page direction, so the line still
+     aligns to the inline start in both languages. */
+  .stack-line {
+    font-family: var(--font-mono);
+    font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+    letter-spacing: 0.02em;
     color: var(--ink-muted);
-    margin: 1.25rem 0 0;
-    max-width: 46ch;
+    margin: 1.5rem 0 0;
+    max-width: none;
   }
 
   .actions {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
-    margin-block-start: 2rem;
+    margin-block-start: 2.25rem;
+  }
+
+  /* Three proof points, rule-separated rather than boxed. */
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .stats li {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .stats li:not(:last-child)::after {
+    content: '';
+    width: 1px;
+    height: 0.9rem;
+    background: var(--line-on-cream);
   }
 
   .socials {
@@ -132,9 +171,12 @@ const isExternal = (href: string) => href.startsWith('http')
     border-color: var(--accent);
   }
 
+  /* Kept deliberately smaller than the text column: the headline and the
+     proof points are the hero's job, and an oversized panel pushed the
+     stats below the fold. */
   .hero-art {
-    aspect-ratio: 4 / 5;
-    max-width: 380px;
+    aspect-ratio: 1 / 1;
+    max-width: 300px;
     inline-size: 100%;
     margin-inline: auto;
     perspective: 900px;
@@ -193,13 +235,13 @@ const isExternal = (href: string) => href.startsWith('http')
     h1 {
       animation-delay: 0.13s;
     }
-    .title {
+    .stack-line {
       animation-delay: 0.21s;
     }
-    .positioning {
+    .actions {
       animation-delay: 0.29s;
     }
-    .actions {
+    .stats {
       animation-delay: 0.37s;
     }
     .socials {

@@ -12,38 +12,61 @@ const { content } = Astro.props
 
 <section id="projects" class="band band--cream">
   <div class="wrap">
-    <SectionHead num="02" title={content.projects.heading} />
+    <SectionHead num="01" title={content.projects.heading} />
 
-    <div class="grid">
-      {
-        content.projects.items.map((project, i) => (
-          <ProjectCard
-            project={project}
-            opensInNewTab={content.opensInNewTab}
-            repoLabel={content.projects.repoLabel}
-            featured={i === 0}
-          />
-        ))
-      }
-    </div>
+    {
+      content.projects.groups.map((group) => (
+        <div class="group">
+          <p class="group-label">{group.label}</p>
+
+          <div class="bento">
+            {group.items.map((project) => (
+              <ProjectCard
+                project={project}
+                opensInNewTab={content.opensInNewTab}
+                repoLabel={content.projects.repoLabel}
+                contributionLabel={content.projects.contributionLabel}
+                viewLabel={content.projects.viewLabel}
+              />
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </div>
 </section>
 
 <style>
-  .grid {
+  .group + .group {
+    margin-block-start: clamp(3rem, 6vw, 5rem);
+  }
+
+  .group-label {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--step-label);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding-block-end: 0.7rem;
+    border-block-end: 1px solid var(--line-on-cream);
+  }
+
+  .bento {
     display: grid;
-    gap: 1.25rem;
+    gap: clamp(1.25rem, 2vw, 2rem);
     grid-template-columns: 1fr;
   }
 
-  /* The lead project spans the full width as a featured card; the other four
-     fall into a 2x2 grid beneath it, so no cell is ever left empty. */
-  @media (min-width: 700px) {
-    .grid {
+  /* Bento weighting: lead cards claim the full row, everything else pairs
+     up beneath them, so the hierarchy is visible before anything is read. */
+  @media (min-width: 900px) {
+    .bento {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .grid > :global(.project-card.featured) {
+    .bento > :global(.project-card.lead) {
       grid-column: 1 / -1;
     }
   }

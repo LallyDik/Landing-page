@@ -9,7 +9,7 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<section id="education" class="band band--ink">
+<section id="education" class="band band--cream">
   <div class="wrap">
     <SectionHead num="05" title={content.education.heading} />
 
@@ -32,18 +32,19 @@ const { content } = Astro.props
     margin: 0;
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    color: var(--cream-muted);
+    color: var(--ink-muted);
     letter-spacing: 0.04em;
   }
 
   h3 {
     margin-block: 0.35rem 0.6rem;
-    font-size: 1.2rem;
+    font-size: var(--step-project);
+    letter-spacing: -0.01em;
   }
 
   .detail {
     margin: 0;
-    color: var(--cream-muted);
+    color: var(--ink-muted);
     font-size: 0.94rem;
     max-width: none;
   }

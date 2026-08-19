@@ -19,20 +19,36 @@ export interface CompactCapability {
 
 export type Capability = FeaturedCapability | CompactCapability
 
+/** Bento weight. 'lead' spans the full grid, 'major' a wide half, 'minor' a cell. */
+export type ProjectScale = 'lead' | 'major' | 'minor'
+
 export interface Project {
   name: string
+  /** What the product is — one line. */
   description: string
-  role: string
+  /** What she actually built. The recruiter-facing answer, not the feature list. */
+  contribution: string
   tech: string[]
   url: string
   repoUrl?: string
   image: string
+  scale: ProjectScale
+  /** True when the cover is drawn artwork rather than a screenshot, so it is
+   *  letterboxed instead of cropped. */
+  imageIsDiagram?: boolean
+}
+
+export interface ProjectGroup {
+  label: string
+  items: Project[]
 }
 
 export interface ExperienceEntry {
   period: string
   role: string
   org: string
+  /** Compact stack line under each timeline entry — scannable at a glance. */
+  stack: string[]
   bullets: string[]
 }
 
@@ -55,12 +71,22 @@ export interface SiteContent {
   hero: {
     name: string
     title: string
-    positioning: string
+    /** Stack line directly under the headline. */
+    stackLine: string
     ctaProjects: string
-    ctaContact: string
+    ctaCv: string
+    /** Three short proof points. No prose. */
+    stats: string[]
   }
   capabilities: { heading: string; items: Capability[] }
-  projects: { heading: string; items: Project[]; repoLabel: string }
+  projects: {
+    heading: string
+    groups: ProjectGroup[]
+    repoLabel: string
+    /** Label above the "what I built" paragraph on each card. */
+    contributionLabel: string
+    viewLabel: string
+  }
   experience: { heading: string; items: ExperienceEntry[] }
   tech: { heading: string; groups: TechGroup[] }
   education: {
@@ -71,6 +97,9 @@ export interface SiteContent {
   }
   contact: {
     heading: string
+    /** Big question that opens the section — the CTA, not a list of details. */
+    prompt: string
+    ctaLabel: string
     links: ContactLink[]
     cvLabel: string
     cvHref: string
