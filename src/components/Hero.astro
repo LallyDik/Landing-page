@@ -16,9 +16,9 @@ const isExternal = (href: string) => href.startsWith('http')
 
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="kicker">{content.hero.name}</p>
       <h1>
-        <span class="visually-hidden">{content.hero.name} — </span>{content.hero.title}
+        <span class="name">{content.hero.name}</span>
+        <span class="title">{content.hero.title}</span>
       </h1>
       <p class="stack-line"><bdi dir="ltr">{content.hero.stackLine}</bdi></p>
 
@@ -83,17 +83,32 @@ const isExternal = (href: string) => href.startsWith('http')
     margin-block-end: 1.25rem;
   }
 
-  /* The English headline is markedly longer than the Hebrew one, so the
-     measure is set in ch (which tracks the font size) and kept wide enough
-     that neither language runs past ~4 lines and pushes the CTAs under the
-     fold. */
+  /* The name leads at full display size — it is the first thing a visitor
+     should be able to identify — with the positioning line beneath it,
+     large enough to read as a headline but clearly secondary. */
   h1 {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .name {
     font-size: var(--step-hero);
     font-weight: 800;
     letter-spacing: -0.035em;
-    line-height: 1.02;
-    margin: 0;
-    max-width: 22ch;
+    line-height: 1;
+  }
+
+  /* Set in ch so the measure tracks the font size; kept wide enough that the
+     longer English wording does not push the CTAs below the fold. */
+  .title {
+    font-size: var(--step-hero-sub);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    max-width: 24ch;
+    color: var(--ink-muted);
   }
 
   /* The run is almost entirely Latin, so it is isolated as an LTR <bdi> —

@@ -102,6 +102,26 @@ describe('hero', () => {
     expect(enH1s[0].text).toContain('Leah Dickman')
   })
 
+  it('prints the name exactly once, as the largest element', () => {
+    for (const [doc, content] of [
+      [heDoc, he],
+      [enDoc, en],
+    ] as const) {
+      const hero = doc.querySelector('.hero')
+      // A visually-hidden copy of the name alongside the visible one made
+      // the hero read as "Leah Dickman — Leah Dickman, Full Stack…" for
+      // screen readers and in plain-text extraction.
+      const occurrences = (hero?.text.match(new RegExp(content.hero.name, 'g')) ?? []).length
+      expect(occurrences).toBe(1)
+
+      // The name carries its own element so it can outrank the positioning
+      // line, rather than being demoted to a small mono eyebrow.
+      expect(hero?.querySelector('h1 .name')?.text.trim()).toBe(content.hero.name)
+      expect(hero?.querySelector('h1 .title')?.text.trim()).toBe(content.hero.title)
+      expect(hero?.querySelector('.kicker')).toBeNull()
+    }
+  })
+
   it('leads with a projects anchor and a CV download', () => {
     for (const [doc, content] of [
       [heDoc, he],

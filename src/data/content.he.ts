@@ -180,8 +180,8 @@ export const he: SiteContent = {
   },
   contact: {
     heading: 'צרו קשר',
-    prompt: 'בונים מוצר Full Stack או AI?',
-    ctaLabel: 'בואו נדבר',
+    prompt: 'מחפשים מפתחת Full Stack ל‑AI ולמערכות Production?',
+    ctaLabel: 'דברו איתי',
     links: [
       { kind: 'email', label: 'ld3250803@gmail.com', href: 'mailto:ld3250803@gmail.com' },
       { kind: 'phone', label: '058-3250803', href: 'tel:+972583250803' },

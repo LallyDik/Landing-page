@@ -32,6 +32,7 @@
   /* Type scale — wide gaps between levels so hierarchy reads instantly.
      Desktop targets: h1 64-72, section 40-48, project 26-32, body 16-18. */
   --step-hero: clamp(2.75rem, 6.5vw, 4.5rem);
+  --step-hero-sub: clamp(1.35rem, 2.4vw, 1.9rem);
   --step-section: clamp(1.9rem, 4vw, 3rem);
   --step-project-lead: clamp(1.6rem, 3vw, 2rem);
   --step-project: clamp(1.25rem, 2vw, 1.6rem);

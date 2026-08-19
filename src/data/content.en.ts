@@ -179,8 +179,8 @@ export const en: SiteContent = {
   },
   contact: {
     heading: 'Get in touch',
-    prompt: 'Building a Full Stack or AI product?',
-    ctaLabel: 'Let’s talk',
+    prompt: 'Looking for a Full Stack developer who ships AI to production?',
+    ctaLabel: 'Email me',
     links: [
       { kind: 'email', label: 'ld3250803@gmail.com', href: 'mailto:ld3250803@gmail.com' },
       { kind: 'phone', label: '+972 58-325-0803', href: 'tel:+972583250803' },
